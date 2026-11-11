@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Regulatory Tracker — before the data</title>
+<style>
+:root{--bg:#f7f5ef;--card:#fffdf8;--ink:#1d1d1b;--mu:#6b6a65;--ln:#ddd8cb;--moss:#0f6e56;--clay:#b4531a;--spine:#c9c2b0;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#141412;--card:#1d1d1a;--ink:#eceadf;--mu:#9d9b90;--ln:#34322b;--moss:#4fc3a1;--clay:#e9a070;--spine:#3a382f;color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+.wrap{max-width:880px;margin:0 auto;padding:0 22px}
+a{color:var(--moss);text-decoration-thickness:1px;text-underline-offset:3px}
+button{font:inherit}
+
+/* header */
+header{padding:26px 0 0;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.mark{font:600 17px system-ui,sans-serif;letter-spacing:.2px}
+.mark em{font-style:normal;color:var(--moss)}
+.tag{font:13px system-ui,sans-serif;color:var(--mu)}
+
+/* hero */
+.hero{padding:72px 0 34px;max-width:none}
+h1{font-size:clamp(30px,4.6vw,46px);line-height:1.16;font-weight:400;margin:0;max-width:30ch}
+h1 b{font-weight:600;color:var(--moss)}
+.lede{font:15px/1.65 system-ui,sans-serif;color:var(--mu);max-width:60ch;margin:18px 0 0}
+
+/* stat band */
+.band{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:20px 30px;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);margin:40px 0 0;padding:16px 0}
+.band>div{padding:2px 0}
+.band .n{font:600 26px system-ui,sans-serif;color:var(--moss);margin-bottom:6px;white-space:nowrap}
+.band .l{font:13px/1.5 system-ui,sans-serif;color:var(--mu)}
+
+/* heatmap */
+.hm{padding:58px 0 8px}
+.hm h2{font-size:21px;font-weight:400;margin:0 0 6px}
+.hm p.note{font:13.5px/1.5 system-ui,sans-serif;color:var(--mu);margin:0 0 20px;max-width:60ch}
+.chiprow{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.chip{border:1px solid var(--ln);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 14px;font:600 13px system-ui,sans-serif;cursor:pointer}
+.chip.on{background:var(--moss);border-color:var(--moss);color:#fff}
+.hmgrid{display:grid;grid-template-columns:34px repeat(12,1fr);gap:4px;align-items:center}
+.hmyr{font:600 12px system-ui,sans-serif;color:var(--mu)}
+.hmrow{display:contents}
+.cell{position:relative;aspect-ratio:1.35;border:none;border-radius:4px;padding:0;cursor:pointer;min-width:0}
+.cell:hover,.cell:focus-visible{outline:2px solid var(--clay);outline-offset:1px}
+.cell.imp{box-shadow:inset 0 0 0 1.5px var(--ln);background-image:repeating-linear-gradient(45deg,transparent 0 4px,color-mix(in srgb,var(--bg) 70%,transparent) 4px 6px)}
+.cell .dot{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--clay)}
+.cell.off{visibility:hidden}
+.hmread{min-height:44px;margin-top:14px;font:14px/1.5 system-ui,sans-serif;color:var(--ink)}
+.hmread .mu{color:var(--mu)}
+.hmlegend{display:flex;align-items:center;gap:10px;margin-top:12px;font:12px system-ui,sans-serif;color:var(--mu)}
+.hmlegend .sw{height:12px;flex:0 0 auto}
+.hmlegend .scale{display:flex;flex:0 0 140px;height:12px;border-radius:3px;overflow:hidden}
+.hmlegend .scale i{flex:1}
+@media(max-width:560px){.hmgrid{grid-template-columns:26px repeat(12,1fr);gap:2px}}
+/* findings + cta */
+.find{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:14px 0 0}
+.find .card h3{margin:0 0 4px;font:700 14px system-ui,sans-serif}
+.find .card p{margin:0;font:13.5px/1.5 system-ui,sans-serif;color:var(--mu)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 0}
+.cta a{display:inline-block;border:1px solid var(--moss);background:var(--moss);color:#fff;border-radius:999px;padding:10px 22px;font:600 14.5px system-ui,sans-serif;text-decoration:none}
+.cta a.ghost{background:var(--card);color:var(--ink);border-color:var(--ln)}
+.cta a:hover{filter:brightness(1.08)}
+.qlook{font:14px system-ui,sans-serif;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:10px 14px;margin:12px 0 0;color:var(--mu)}
+.qlook code{color:var(--ink)}
+.qbar2{display:flex;gap:8px;max-width:640px}
+.qbar2 input{flex:1;padding:12px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--card);color:var(--ink);font:14.5px system-ui,sans-serif;min-width:0}
+.qbar2 input:focus{outline:2px solid var(--moss);outline-offset:1px}
+.qbar2 button{border:none;background:var(--moss);color:#fff;border-radius:10px;padding:0 22px;font:600 14.5px system-ui,sans-serif;cursor:pointer}
+.qex{font:13.5px system-ui,sans-serif;color:var(--mu);margin:10px 0 0}
+.qex a{cursor:pointer}
+
+/* entry routes */
+.routes{padding:52px 0 30px;border-top:1px solid var(--ln);margin-top:44px}
+.routes h2{font-size:21px;font-weight:400;margin:0 0 4px}
+.routes>p{font:13.5px/1.5 system-ui,sans-serif;color:var(--mu);margin:0 0 18px;max-width:60ch}
+.route{display:grid;grid-template-columns:170px 1fr auto;gap:6px 22px;padding:18px 0;border-bottom:1px solid var(--ln);align-items:baseline}
+.route h3{margin:0;font:600 16px system-ui,sans-serif}
+.route p{margin:0;font:14.5px/1.55 system-ui,sans-serif;color:var(--mu);max-width:52ch}
+.route a.go{font:600 14px system-ui,sans-serif;white-space:nowrap}
+@media(max-width:640px){.route{grid-template-columns:1fr}.route a.go{justify-self:start}}
+
+/* footer */
+footer{padding:30px 0 60px;font:13px/1.6 system-ui,sans-serif;color:var(--mu)}
+footer .fine{border-top:1px solid var(--ln);padding-top:16px;max-width:70ch}
+@media (prefers-reduced-motion:reduce){.spine .rail{transition:none}.tick{transition:none}}
+
+/* one page-load reveal: cells fade in column by column */
+@keyframes appear{to{opacity:1}}
+.cell{opacity:0;animation:appear .4s ease-out calc(var(--d,0)*14ms) both}
+@media (prefers-reduced-motion:reduce){.cell{animation:none;opacity:1}}
+</style></head><body>
+<div class="wrap">
+
+<header>
+<div class="mark">Regulatory <em>Tracker</em></div>
+<div class="tag">Digital-asset regulation in Indonesia and Singapore &nbsp;·&nbsp; <a href="datasets.html">Data catalog</a></div>
+</header>
+
+<div class="hero">
+<h1>When a country moves crypto from its <b>trade ministry</b> to its <b>financial regulator</b>, what actually changes?</h1>
+<p class="lede">On 10 January 2025 Indonesia moved crypto oversight from Bappebti to the OJK. This tracker follows that question with real data: 45 months of transaction values, a dated timeline of every regulatory action, and an event study that reports its own failures. Nothing here is simulated.</p>
+</div>
+
+<div class="band">
+<div><div class="n">45</div><div class="l">monthly observations, Jan 2023 – Sep 2026, each one sourced</div></div>
+<div><div class="n">Rp482.2T</div><div class="l">FY2025 transaction value, down 25.9% from FY2024</div></div>
+<div><div class="n">+9.3% → −5.2%</div><div class="l">monthly growth before vs after the transfer; the break is not statistically significant (p = 0.12)</div></div>
+<div><div class="n">32</div><div class="l">dated regulatory milestones across Indonesia, Singapore and ASEAN</div></div>
+</div>
+
+<div class="hm">
+<h2>The record, month by month</h2>
+<p class="note">Both layers of the project in one grid. Darker cells mean more: rupiah traded, or regulatory actions taken. Hatched cells are derived, not measured. Clay dots mark the three pivotal events. Hover or tap a cell to read it; follow it into the tracker for the chart around it.</p>
+<div class="chiprow">
+<button class="chip on" id="cmk">Transaction value</button>
+<button class="chip" id="ctl">Regulatory actions</button>
+</div>
+<div class="hmgrid" id="hm"></div>
+<div class="hmread" id="hmread"></div>
+<div class="hmlegend"><span id="hmlo">Rp trillion traded</span><span class="scale" id="hmscale"></span><span>← less · more →</span><span style="margin-left:10px">▨ derived &nbsp;·&nbsp; ● pivotal event</span></div>
+</div>
+
+<div class="hm">
+<h2>Three findings, honestly stated</h2>
+<p class="note"><b>Just here for the story?</b> These three findings tell you everything. <b>Want to check my work?</b> Everything downstream — charts, queries, raw CSVs — is open for exactly that.</p>
+<p class="note">Anyone can generate a dashboard with AI. What can't be generated: data reconciled against every published total, estimates that carry their own placebo tests, and a null result published anyway. That's the product.</p>
+<div class="find">
+<div class="card"><h3>The handover changed nothing detectable</h3><p>Growth shifted +9.3% → −5.2% a month at the transfer — and the shift is not statistically significant. Placebo tests pass; the null is the finding.</p></div>
+<div class="card"><h3>The 2024 boom wasn't policy</h3><p>The pre-transfer recovery tracked global crypto cycles with no control series needed to see it. Don't credit Bappebti's exit for what followed.</p></div>
+<div class="card"><h3>The region is racing</h3><p>Six jurisdictions, four strategies: Singapore liberalises, Indonesia builds, Thailand cuts taxes, Vietnam legalises, the Philippines paused. Watch this space.</p></div>
+</div>
+</div>
+
+<div class="routes">
+<h2>Five ways in</h2>
+<p>The tracker is one page with tabs. Pick the question you're asking; you'll land in the right place.</p>
+<div class="route">
+<h3>What did the market do?</h3>
+<p>Monthly transaction values across the Bappebti era, the handover and the OJK era — reported points solid, derived points hollow, so you always know what was measured.</p>
+<a class="go" href="dashboard.html#mk">Open market series</a>
+</div>
+<div class="route">
+<h3>Did the handover change anything?</h3>
+<p>The event study, shown twice: once the way it fails, once the way it holds. Growth rates, placebo tests, and the write-up language ready to use.</p>
+<a class="go" href="dashboard.html#es">Open event study</a>
+</div>
+<div class="route">
+<h3>What did regulators actually do?</h3>
+<p>A filterable timeline — POJK amendments, tax rules, the ICEx launch, MAS's stablecoin framework — by jurisdiction and theme.</p>
+<a class="go" href="dashboard.html#tl">Open timeline</a>
+</div>
+<div class="route">
+<h3>How does this sit in ASEAN?</h3>
+<p>An interactive map: hover a country for its count, take the country-by-country tour, read each jurisdiction's strategy — from Singapore's liberalise-to-attract to Thailand's 0% tax.</p>
+<a class="go" href="dashboard.html#ax">Open the ASEAN map</a>
+</div>
+<div class="route">
+<h3>Can I interrogate it myself?</h3>
+<p>Yes. Search all 103 records with your own queries, save them, and match any variable A to any variable B — a fit, a group test, and an honest interpretation in your browser.</p>
+<a class="go" href="datasets.html">Open the data lab</a>
+</div>
+</div>
+
+<div class="hm">
+<h2>Start with a question of your own</h2>
+<div class="qbar2">
+<input id="qjump" type="search" placeholder='Try: country:Indonesia kind:events year:2025 — or just "tax"' aria-label="Search the data">
+<button id="qgo2">Search</button>
+</div>
+<p class="qex">Or start from: <a data-q='country:Indonesia kind:events year:2025'>Indonesia's 2025 actions</a> · <a data-q='kind:events stablecoin'>stablecoin rules</a> · <a data-q='"tax change"'>the tax change</a> · <a data-q='derived'>the 14 derived months</a></p>
+<p class="note" style="margin-top:10px">The catalog indexes all 105 records across seven datasets. Queries are saved as buttons; every table downloads as CSV; the analysis lab runs in your browser.</p>
+<div class="cta">
+<a href="dashboard.html">Open the live tracker</a>
+<a class="ghost" href="datasets.html">Interrogate the data</a>
+</div>
+</div>
+
+<footer>
+<div class="fine">Compiled 9 Nov 2026 by Natasha Attamimi. Figures are regulator statements reported through press coverage and are subject to revision; the method and its limits are stated inside the tracker, first page, before any number. Every table behind the charts is <a href="datasets.html">browsable and downloadable in the data catalog</a>. Reuse: attribution appreciated.</div>
+</footer>
+
+</div>
+<script>
+/* real data: monthly crypto transaction value, Rp trillion. [month, value, imputed?] */
+var M=[["2023-01",12.13,1],["2023-02",13.81,1],["2023-03",12.54,0],["2023-04",10.77,0],["2023-05",9.30,1],["2023-06",9.30,1],["2023-07",9.30,1],["2023-08",9.30,1],["2023-09",7.96,0],["2023-10",10.50,1],["2023-11",22.17,1],["2023-12",22.17,1],["2024-01",21.57,0],["2024-02",33.69,0],["2024-03",102.74,0],["2024-04",52.26,0],["2024-05",49.82,0],["2024-06",41.67,0],["2024-07",42.34,0],["2024-08",48.92,0],["2024-09",33.67,0],["2024-10",48.44,0],["2024-11",81.40,0],["2024-12",94.08,0],["2025-01",44.07,0],["2025-02",32.62,1],["2025-03",32.62,1],["2025-04",35.61,0],["2025-05",49.57,0],["2025-06",32.31,0],["2025-07",52.46,0],["2025-08",45.21,0],["2025-09",38.64,0],["2025-10",49.29,0],["2025-11",37.23,0],["2025-12",32.68,0],["2026-01",29.24,0],["2026-02",24.33,0],["2026-03",22.82,1],["2026-04",22.82,1],["2026-05",22.82,1],["2026-06",28.58,0],["2026-07",20.52,0],["2026-08",23.16,0],["2026-09",30.56,0]];
+/* real data: dated regulatory actions within the grid, with labels */
+var ACT={"2023-01":["P2SK Law — legal basis for the OJK transfer"],"2023-07":["CFX national exchange launches"],"2023-08":["MAS finalises stablecoin framework"],"2024-04":["PS Act custody amendments in force (SG)"],"2024-08":["Thailand digital-asset sandbox"],"2024-10":["BIS Project Mandala phase 1"],"2024-12":["POJK 27/2024 issued"],"2025-01":["OJK takeover — 10 Jan"],"2025-06":["Vietnam passes Digital Technology Industry Law"],"2025-07":["DFA trading formally starts (ID)"],"2025-08":["PMK 50/2025 tax change · TouristDigiPay announced · domestic unrest"],"2025-09":["Thailand 5-year capital-gains exemption"],"2025-11":["OJK draft DFA regulation"],"2025-12":["POJK 23/2025 — DFA derivatives"],"2026-01":["Vietnam law takes force; crypto pilot"],"2026-02":["SC Malaysia clarifies broking rules"],"2026-03":["ICEx Group launch — exchange, clearing, custody"],"2026-06":["MAS draft stablecoin legislation"],"2026-07":["Indonesia passes international financial centre bill"],"2026-09":["PADK 3/2026 implementing rules"]};
+var EVTS={"2025-01":1,"2025-08":1,"2026-03":1};
+var YEARS=[2023,2024,2025,2026],MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var hm=document.getElementById("hm"),read=document.getElementById("hmread"),mode="mk";
+function byMonth(m){var o=null;M.forEach(function(r){if(r[0]==m)o=r});return o}
+function mix(t){return "color-mix(in srgb, var(--moss) "+Math.round(10+88*t)+"%, var(--card))"}
+function actCount(m){return ACT[m]?ACT[m].length:0}
+function build(){
+ hm.innerHTML="";
+ var head=document.createElement("div");head.className="hmyr";hm.appendChild(head);
+ MONTHS.forEach(function(mo){var h=document.createElement("div");h.className="hmyr";h.style.textAlign="center";h.textContent=mo;hm.appendChild(h)});
+ var d=0;
+ YEARS.forEach(function(y){
+  var yr=document.createElement("div");yr.className="hmyr";yr.textContent=y;hm.appendChild(yr);
+  MONTHS.forEach(function(mo,i){
+   var m=y+"-"+(i<9?"0":"")+(i+1);
+   var c=document.createElement("button");c.className="cell";c.style.setProperty("--d",d++);
+   var v=byMonth(m),a=ACT[m];
+   if(y==2026&&i>8){c.className+=" off";hm.appendChild(c);return}
+   if(mode=="mk"&&v){
+    c.style.background=mix((v[1]-7.96)/(102.74-7.96));
+    if(v[2])c.className+=" imp";
+    c.setAttribute("aria-label",MONTHS[i]+" "+y+": Rp"+v[1]+" trillion"+(v[2]?", derived":", reported"));
+    c.onmouseenter=c.onfocus=function(){read.innerHTML="<b>"+MONTHS[i]+" "+y+"</b> — Rp"+v[1]+" trillion "+(v[2]?"<span class='mu'>· derived from reported cumulative figures, split evenly</span>":"<span class='mu'>· as reported by the regulator</span>")};
+    c.onclick=function(){location.href="dashboard.html#mk"};
+    if(a){var dt=document.createElement("span");dt.className="dot";c.appendChild(dt)}
+   }else if(mode=="ctl"&&a){
+    c.style.background=mix(Math.min(1,a.length/3));
+    c.setAttribute("aria-label",MONTHS[i]+" "+y+": "+a.length+" regulatory action(s)");
+    c.onmouseenter=c.onfocus=function(){read.innerHTML="<b>"+MONTHS[i]+" "+y+"</b> — "+a.length+" action"+(a.length>1?"s":"")+": <span class='mu'>"+a[0]+"</span>"};
+    c.onclick=function(){location.href="dashboard.html#tl"};
+   }else{
+    c.style.background="color-mix(in srgb, var(--moss) 4%, var(--card))";
+    c.style.cursor="default";
+    c.disabled=true;
+   }
+   hm.appendChild(c);
+  });
+ });
+ read.innerHTML="<span class='mu'>"+(mode=="mk"?"Darker = more rupiah traded. The 2024 recovery, the handover in Jan 2025, and the 2025–2026 cooling, all visible at once. Clay dots mark months with pivotal regulatory events.":"Darker = more dated regulatory actions that month. Note the cluster around Aug 2025 — tax change, unrest, and a new Thai sandbox in the same weeks.")+"</span>";
+}
+function setMode(m){mode=m;document.getElementById("cmk").className="chip"+(m=="mk"?" on":"");document.getElementById("ctl").className="chip"+(m=="ctl"?" on":"");document.getElementById("hmlo").textContent=m=="mk"?"Rp trillion traded":"Dated regulatory actions";build()}
+document.getElementById("cmk").onclick=function(){setMode("mk")};
+document.getElementById("ctl").onclick=function(){setMode("ctl")};
+var scale=document.getElementById("hmscale");
+for(var i=0;i<8;i++){var s=document.createElement("i");s.style.background=mix(i/7);scale.appendChild(s)}
+build();
+/* query jump: run the query for real inside the catalog */
+function qjump(q){if(q&&q.trim())location.href="datasets.html?q="+encodeURIComponent(q.trim())}
+document.getElementById("qgo2").onclick=function(){qjump(document.getElementById("qjump").value)};
+document.getElementById("qjump").onkeydown=function(e){if(e.key=="Enter")qjump(this.value)};
+document.querySelectorAll(".qex a").forEach(function(a){a.onclick=function(e){e.preventDefault();qjump(a.getAttribute("data-q"))}});
+</script></body></html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Regulatory Tracker — Indonesia crypto (real data)</title>
+<style>
+:root{--bg:#fbfaf7;--card:#fff;--tx:#1d1d1b;--mu:#6b6a65;--ln:#e4e1d8;--ac:#0f6e56;--wn:#b4531a;--bl:#3b6fb6;--rd:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#181816;--card:#222220;--tx:#eeece6;--mu:#a09e96;--ln:#38362f;--ac:#4fc3a1;--wn:#e9a070;--bl:#7aa5d8;--rd:#e07b6a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#181816;--card:#222220;--tx:#eeece6;--mu:#a09e96;--ln:#38362f;--ac:#4fc3a1;--wn:#e9a070;--bl:#7aa5d8;--rd:#e07b6a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 Georgia,"Times New Roman",serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:25px;margin:0 0 4px}h2{font-size:18px;margin:26px 0 8px}h3{font-size:15px;margin:0 0 4px}
+.sub,.note,table,.tabs button,.badge,.chip,.kpi,label{font-family:system-ui,sans-serif}
+.sub,.note{color:var(--mu);font-size:13px;line-height:1.45}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.tabs{display:flex;gap:6px;margin:14px 0;flex-wrap:wrap}
+.tabs button{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 14px;font-size:13.5px;cursor:pointer}
+.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.real{background:var(--ac);color:#fff}.warn{background:var(--wn);color:#fff}.gap{background:#8a6d1f;color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:14px 0}
+.kpi{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:10px 12px}
+.kpi .v{font:600 24px system-ui,sans-serif;color:var(--ac)}
+.kpi .d{font:12.5px system-ui,sans-serif;color:var(--mu)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:4px 12px;font-size:12.5px;cursor:pointer}
+.chip.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+svg{width:100%;height:auto;display:block}
+svg text{fill:var(--mu);font:11px system-ui,sans-serif}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font:12.5px system-ui,sans-serif;margin:6px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;background:var(--c)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--ln);padding:6px 8px;text-align:left}
+th{color:var(--mu)}
+.big{font:600 26px system-ui,sans-serif;color:var(--ac)}
+.hide{display:none}
+section:not(.hide){animation:secfade .28s ease}
+@keyframes secfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){section:not(.hide){animation:none}}
+/* timeline */
+.tl{position:relative;margin:8px 0;padding-left:18px;border-left:2px solid var(--ln)}
+.ev{position:relative;padding:6px 0 10px}
+.ev::before{content:"";position:absolute;left:-25px;top:12px;width:10px;height:10px;border-radius:50%;background:var(--dotc,var(--ac))}
+.ev .d{font:600 12px system-ui,sans-serif;color:var(--mu)}
+.ev .jur{display:inline-block;font:600 10.5px system-ui,sans-serif;padding:1px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.jur.id{background:var(--ac);color:#fff}.jur.sg{background:var(--bl);color:#fff}
+.ev .th{font:11px system-ui,sans-serif;color:var(--mu);margin-left:6px}
+.ev b{font-family:system-ui,sans-serif;font-size:13.5px}
+.ev p{margin:3px 0 0;font-size:13.5px}
+.tlnarr{font:13.5px/1.55 system-ui,sans-serif;color:var(--tx);background:color-mix(in srgb,var(--ac) 8%,var(--card));border:1px solid var(--ln);border-left:3px solid var(--ac);border-radius:8px;padding:10px 14px;margin:0 0 16px}
+.tlyear{font:600 11.5px system-ui,sans-serif;letter-spacing:.5px;color:var(--mu);margin:14px 0 4px}
+.ev{animation:evfade .3s ease calc(var(--d,0)*60ms) both}
+@keyframes evfade{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.ev{animation:none}}
+.pos{color:var(--ac);font-weight:600}.neg{color:var(--rd);font-weight:600}
+/* asean map */
+.mapwrap{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;align-items:start}
+.axpanel{display:flex;justify-content:space-between;gap:10px;align-items:stretch;margin-top:12px}
+.axpanel .card{flex:1 1 0;min-width:0}
+@media(max-width:960px){.mapwrap{grid-template-columns:1fr}.axpanel{flex-direction:column}}
+#seamap svg{width:100%;height:auto;display:block}
+#seamap .land{fill:var(--ln);opacity:.55}
+#seamap .cty{cursor:pointer;transition:fill-opacity .15s}
+#seamap .cty:hover,#seamap .cty:focus-visible{fill-opacity:.75;outline:none}
+#seamap .cty.sel{stroke:var(--tx);stroke-width:2.5;fill-opacity:1}
+#seamap .cty.dim{fill-opacity:.22}
+#seamap .bdg.dim circle{opacity:.35}
+#seamap .bdg.sel circle{stroke-width:3.5}
+#seamap .bdg{cursor:pointer}
+#seamap text{fill:var(--mu);font:10px system-ui,sans-serif;pointer-events:none}
+#seamap .bl{font-weight:700;fill:var(--tx)}
+.axpanel{display:flex;flex-direction:column;gap:10px}
+.tourbtns{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ctyhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ctyname{font:700 20px Georgia,serif}
+.axrow{display:flex;align-items:center;gap:8px;cursor:pointer;padding:3px 8px;border-radius:6px;font:13px system-ui,sans-serif}
+.axrow:hover,.axrow.sel{background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.axrow .nm{width:86px;flex:none}
+.axrow .bar{height:10px;border-radius:3px;min-width:3px}
+.axrow .ct{width:20px;text-align:right;font-weight:700;color:var(--mu)}
+.axrow.sel .ct{color:var(--ac)}
+#axdetail h3{font:700 15px system-ui,sans-serif;margin:0 0 2px}
+#axdetail .tg{font:600 11px system-ui,sans-serif;color:var(--ac);letter-spacing:.3px}
+#axdetail ul{margin:10px 0 0;padding:0;list-style:none}
+#axdetail li{padding:6px 0;border-bottom:1px solid var(--ln);font:13px system-ui,sans-serif}
+#axdetail li .d{color:var(--mu);font-size:12px;margin-right:6px}
+#tip{position:fixed;z-index:70;max-width:280px;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:9px 12px;font:12.5px/1.5 system-ui,sans-serif;color:var(--tx);box-shadow:0 6px 18px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .12s}
+#tip.on{opacity:1}
+#tip b{display:block;margin-bottom:2px}
+#tip .e{color:var(--ac);display:block;margin-top:4px}
+.kpi{transition:transform .15s,border-color .15s;cursor:pointer}
+.kpi:hover,.kpi:focus-visible{transform:translateY(-3px);border-color:var(--ac);outline:none}
+.kpi.sel{border-color:var(--ac)}
+#kpidetail{animation:secfade .25s ease}
+#kpidetail h3{margin:0 0 6px;font:700 14px system-ui,sans-serif}
+#kpidetail p{margin:4px 0;font:13.5px/1.55 system-ui,sans-serif;color:var(--mu)}
+#kpidetail .evlist{margin:8px 0 0;padding:0;list-style:none}
+#kpidetail .evlist li{padding:4px 0;border-bottom:1px solid var(--ln);font:13px system-ui,sans-serif}
+#kpidetail .evlist li .d{color:var(--mu);font-size:12px;margin-right:6px}
+table tr:hover td{background:color-mix(in srgb,var(--ac) 7%,transparent)}
+.ev{border-radius:8px;transition:background .15s;padding-left:4px;margin-left:-6px}
+.ev:hover{background:color-mix(in srgb,var(--card) 55%,var(--bg))}
+svg circle.pt{transition:r .12s}
+svg rect.hb{transition:opacity .12s}
+.chip,.tabs button,.tabs button.on{transition:background .15s,color .15s,border-color .15s}
+a{color:var(--ac)}
+/* setup wizard */
+.ovl{position:fixed;inset:0;background:rgba(20,20,18,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.ovl.hide{display:none}
+.wiz{background:var(--card);border:1px solid var(--ln);border-radius:14px;max-width:640px;width:100%;padding:22px 24px;max-height:88vh;overflow:auto}
+.wiz h2{margin:0 0 4px;font-size:19px}
+.wiz .steps{font:12px system-ui,sans-serif;color:var(--mu);margin-bottom:12px}
+.wiz .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.wiz .opt{border:1px solid var(--ln);border-radius:10px;padding:12px;cursor:pointer;text-align:left;background:var(--bg);color:var(--tx)}
+.wiz .opt:hover{border-color:var(--ac)}
+.wiz .opt b{display:block;font:600 14px system-ui,sans-serif;margin-bottom:2px}
+.wiz .opt span{font:12.5px system-ui,sans-serif;color:var(--mu)}
+.wiz .nav{display:flex;justify-content:space-between;margin-top:16px}
+.wiz .nav button{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 16px;font:13px system-ui,sans-serif;cursor:pointer}
+.wiz .nav button.pri{background:var(--ac);color:#fff;border-color:var(--ac)}
+.guidebtn{position:fixed;right:14px;bottom:14px;z-index:40;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:8px 16px;font:600 13px system-ui,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.guidebtn:hover{border-color:var(--ac)}
+/* six moves: strip + detail list */
+.strip{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap;margin:6px 0 4px}
+.cell{flex:1 1 130px;border:1px solid var(--ln);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.cell.hl{border-color:var(--ac)}
+.cd{font:600 10.5px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:3px}
+.ct{font:600 13.5px/1.35 system-ui,sans-serif;color:var(--tx);margin-bottom:5px}
+.cs{font:600 12px system-ui,sans-serif;color:var(--ac)}
+.arr{align-self:center;color:var(--mu);font:14px system-ui,sans-serif}
+.moves{display:flex;flex-direction:column}
+.mv{display:grid;grid-template-columns:170px 1fr;gap:2px 16px;padding:13px 4px;border-top:1px solid var(--ln)}
+.mv:first-child{border-top:none}
+.mvd{grid-column:1;grid-row:1/4;font:600 11.5px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);padding-top:3px}
+.mvt{grid-column:2;font:600 15px system-ui,sans-serif;color:var(--tx)}
+.mvx{grid-column:2;font:14px/1.5 system-ui,sans-serif;color:var(--tx);opacity:.85;max-width:60ch}
+.mvs{grid-column:2;font:600 13px system-ui,sans-serif;color:var(--ac)}
+@media(max-width:700px){.mv{grid-template-columns:1fr}.mvd{grid-column:1;grid-row:auto}}
+
+</style></head><body><main>
+<h1>Regulatory tracker dashboard</h1>
+<p class="sub">Monthly Indonesian crypto transaction values Jan 2023 – Sep 2026, a dated regulatory timeline of Indonesian actions, and an event study that reports its own failures. All data real and sourced; compiled 9 Nov 2026. Caveats in <b>Method &amp; limits</b>; every table downloadable in the <a href="datasets.html">data catalog</a>.</p>
+
+<div class="kpis">
+<div class="kpi" data-kd="fy25" tabindex="0"><div class="v">Rp482.2T</div><div class="d">FY2025 crypto transaction value <span class="neg">−25.9%</span> vs FY2024 (Rp650.6T)</div></div>
+<div class="kpi" data-kd="ytd26" tabindex="0"><div class="v">Rp224.8T</div><div class="d">Jan–Sep 2026 transaction value (OJK, cumulative)</div></div>
+<div class="kpi" data-kd="sep26" tabindex="0"><div class="v">Rp30.56T</div><div class="d">Latest month (Sep 2026), <span class="pos">up 32%</span> MoM</div></div>
+<div class="kpi" data-kd="users" tabindex="0"><div class="v">~23.2M</div><div class="d">Registered crypto consumers (Aug 2026)</div></div>
+</div>
+<div class="card hide" id="kpidetail"></div>
+
+<div class="tabs">
+<button class="on" data-t="mk">What did the market do?</button>
+<button data-t="tl">What did regulators do?</button>
+<button data-t="es">Did the handover matter?</button>
+<button data-t="ax">How does ASEAN compare?</button>
+<button data-t="pc">What have we learned so far?</button>
+<button data-t="me">Method &amp; limits</button>
+</div>
+
+<!-- ============ MARKET ============ -->
+<section id="mk">
+<div class="card"><h3>The record in six moves</h3>
+<div class="strip">
+<div class="cell"><div class="cd">2022–23</div><div class="ct">Bappebti era ends</div><div class="cs">Rp149.3T · −51%</div></div>
+<div class="arr">→</div>
+<div class="cell"><div class="cd">2024</div><div class="ct">Boom</div><div class="cs">Rp650.6T · +335%</div></div>
+<div class="arr">→</div>
+<div class="cell hl"><div class="cd">Jan 2025</div><div class="ct">OJK takes over</div><div class="cs">break p = 0.117, ns</div></div>
+<div class="arr">→</div>
+<div class="cell"><div class="cd">Jul–Aug 2025</div><div class="ct">Tax + unrest</div><div class="cs">unidentified</div></div>
+<div class="arr">→</div>
+<div class="cell"><div class="cd">Mar 2026</div><div class="ct">ICEx launches</div><div class="cs">Rp20–23T/mo</div></div>
+<div class="arr">→</div>
+<div class="cell"><div class="cd">Sep 2026</div><div class="ct">Rebound</div><div class="cs">Rp30.56T</div></div>
+</div>
+<p class="note">One period, one headline, one number. Evidence and interpretation in the later tabs.</p>
+</div>
+<h2>Monthly crypto transaction value, Jan 2023 – Sep 2026 <span class="badge real">REAL</span></h2>
+<p class="note">Rp trillion. Solid points are as reported; hollow points with dashed segments are derived (split evenly from reported combined or cumulative figures). Hover any point for its value — and what regulators did that month. Markers: the 10 Jan 2025 transfer, the 1 Aug 2025 tax change, the Mar 2026 ICEx launch.</p>
+<div class="card"><div id="mchart"></div></div>
+
+<h2>Annual totals, full Bappebti + OJK record <span class="badge real">REAL</span></h2>
+<div class="card"><div id="ychart"></div>
+<p class="note">2021–2023 from Bappebti annual reports; 2024 from Bappebti (Rp650.61T — OJK later cited Rp640.61T, a revision; both are shown in sources). 2025 is OJK's first full year of oversight (Rp482.23T). The boom–bust–boom pattern tracks global crypto cycles, not domestic regulation — which is why an event study needs a control series.</p></div>
+
+<h2>2024 (Bappebti era) — recovered monthly series <span class="badge real">REAL, RECONSTRUCTED</span></h2>
+<div class="card">
+<p class="note">The 2024 monthly series was recovered from Bappebti statements and reconciles against every reported cumulative total: Jan+Feb = 55.26 ✓, +Mar = 158.0 (Q1) ✓, +Apr+May+Jun = 301.75 (H1) ✓, +Jul = 344.09 ✓, +Aug+Sep = 426.69 ✓, +Oct = 475.13 ✓, +Nov = 556.53 ✓, +Dec = 650.61 (FY) ✓.</p>
+<table><tr><th>Reported anchor (Bappebti)</th><th>Rp trillion</th></tr>
+<tr><td>Jan–Feb 2024</td><td>55.26</td></tr>
+<tr><td>Q1 2024</td><td>158.0</td></tr>
+<tr><td>H1 2024 (+354.2% YoY)</td><td>301.75</td></tr>
+<tr><td>Jan–Jul 2024</td><td>344.09</td></tr>
+<tr><td>Jan–Sep 2024 (+352.0% YoY)</td><td>426.69</td></tr>
+<tr><td>Jan–Oct 2024 (+352.9% YoY)</td><td>475.13</td></tr>
+<tr><td>Jan–Nov 2024</td><td>556.53</td></tr>
+<tr><td>FY 2024</td><td>650.61</td></tr></table>
+<p class="note">Directly reported months: Feb (33.69), Apr (52.26), May (49.82), Aug (48.92), Sep (33.67), Oct (48.44); the rest are residuals of consecutive cumulative reports — arithmetic, not estimates. For 2022, Jan–Aug = Rp249.3T is recovered, implying Sep–Dec ≈ Rp57.1T combined; month-level 2022 detail sits in the Laporan Kinerja 2022 PDF.</p></div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="tl" class="hide">
+<h2>Documented regulatory milestones <span class="badge real">REAL</span></h2>
+<p class="note">Every entry is a dated, verifiable regulatory action or market-structure event. Filter by jurisdiction and theme. This is what "regulatory attention" looks like when measured by actual actions rather than keyword counts.</p>
+<div class="chips" id="jchips"></div>
+<div class="chips" id="tchips"></div>
+<div class="tl" id="tlist"></div>
+</section>
+
+<!-- ============ EVENT STUDY ============ -->
+<section id="es" class="hide">
+<h2>Event study — what can and cannot be estimated <span class="badge real">REAL</span></h2>
+
+<div class="card"><h3>The 10 Jan 2025 OJK takeover — now estimable, with a caveat</h3>
+<p class="note">The Bappebti monthly pre-period (Jan 2023 – Dec 2024) was recovered from reported monthly figures and reconciled cumulative totals, giving n = 45 monthly observations (24 pre, 21 post). Six pre-period months are imputed residuals (see Market series tab). Two specifications were run on this exact series; the second is the right one.</p></div>
+
+<div class="card"><h3>Specification 1: level-shift ITS — misspecified, do not quote</h3>
+<div id="itschart"></div>
+<p class="note">Log values with the naive fit (grey). The level-shift form produces a huge "effect" at any date you choose — the steep 2024 recovery makes every date look like a break, and fake event dates prove it. The number is deliberately not quoted here; the full table sits in the data catalog, with the placebo test that disqualifies it.</p></div>
+
+<div class="card"><h3>Specification 2: growth-rate break — the defensible one <span class="badge real">REAL ESTIMATE</span></h3>
+<div id="grchart"></div>
+<p class="note">Month-over-month growth. Green: pre-transfer; orange: post; dashed lines: each period's mean. The gap between them is the "break" — and it is not statistically significant.</p>
+<p class="note">Instead of a level shift, test whether the <b>monthly growth rate</b> changed at the transfer. Outcome: Δlog(value), n = 44 month-over-month growth observations, Newey-West (lag 3) standard errors:</p>
+<table><tr><th>Quantity</th><th>Estimate</th><th>Detail</th></tr>
+<tr><td>Mean growth, pre-transfer</td><td>+9.3%/month</td><td>the 2023→2024 market recovery</td></tr>
+<tr><td>Growth shift at Jan 2025</td><td>−14.3 pp/month</td><td>p = 0.117, not significant</td></tr>
+<tr><td>Implied post-transfer growth</td><td>−5.2%/month</td><td>consistent with the 2025 cooling</td></tr>
+<tr><td>Robustness (drop imputed months, n = 31)</td><td>−11.8 pp/month</td><td>p = 0.282, not significant</td></tr></table>
+<p class="note" style="margin-top:8px"><b>Placebo test passes this time.</b> Fake event dates across the pre-period produce shifts between −20.4 and +8.9 pp with p between 0.12 and 0.63 — none stands out, unlike Specification 1.</p>
+<p class="note"><b>Result:</b> no statistically detectable change in the growth trajectory at the 10 Jan 2025 takeover. This matches the design prior: the transfer was built for continuity (POJK 27/2024 adopted Bappebti's rules with refinements). The visible post-2025 cooling exists in the raw series but cannot be attributed to the transfer — it coincides with the tax change, unrest, and global cycle, and is not distinguishable from noise at monthly frequency.</p></div>
+<div class="card">
+<h2>Second estimable event: the 1 Aug 2025 tax change <span class="badge real">REAL ESTIMATE</span></h2>
+<p class="note">PMK 50/2025 raised the final income tax on domestic-exchange crypto sales from 0.1% to 0.21% and removed the 11% VAT on purchases (net effect on trading cost ambiguous; foreign-exchange sales taxed at 1%). Interrupted time series on log monthly value, OJK-era months only (n = 21), Newey-West (lag 1) standard errors:</p>
+<table><tr><th>Term</th><th>Coef</th><th>HAC SE</th><th>p</th></tr>
+<tr><td>const</td><td>3.568</td><td>0.111</td><td>0.000</td></tr>
+<tr><td>t (trend)</td><td>0.033</td><td>0.028</td><td>0.244</td></tr>
+<tr><td>post (Aug 2025)</td><td>0.499</td><td>0.207</td><td>0.016</td></tr>
+<tr><td>t_post</td><td>−0.084</td><td>0.032</td><td>0.009</td></tr></table>
+<p class="note" style="margin-top:8px">Raw headline: implied level shift <b>+64.7%</b> (95% CI +9.7% to +147.1%), p = 0.016.</p></div>
+
+<div class="card"><h3>But the placebo test fails — treat this as weak evidence</h3>
+<p class="note">Re-run the same regression at fake event dates inside the pre-period. If the design works, fake dates should produce small, insignificant shifts. They do not:</p>
+<table><tr><th>Fake event date</th><th>Implied shift</th><th>p</th></tr>
+<tr><td>Mar 2025</td><td>+8.5%</td><td>0.505</td></tr>
+<tr><td>Apr 2025</td><td>+24.4%</td><td>0.050</td></tr>
+<tr><td>May 2025</td><td>+43.0%</td><td>0.009</td></tr>
+<tr><td>Jun 2025</td><td>+53.8%</td><td>0.020</td></tr>
+<tr><td>Jul 2025</td><td>+66.8%</td><td>0.002</td></tr></table>
+<p class="note" style="margin-top:8px">Fake dates produce shifts as large as the real one with small p-values. With only 7 pre-period months and a rising trend, the design cannot separate a level shift from the trend. Robustness: excluding imputed months gives +41.5% (p = 0.029); cutting the window at Mar 2026 gives +172.6% (p &lt; 0.001) — the estimate moves wildly with sample choices, confirming fragility.</p>
+<p class="note"><b>Write-up language:</b> "The estimated effect of the August 2025 tax change is positive and statistically significant in a naive specification (+65%, p = 0.02), but placebo event dates produce similar shifts, so the design does not identify an effect. The data are consistent with a trend break, a tax effect, the August 2025 civil unrest, or noise — the monthly series is too short to distinguish them."</p></div>
+
+<div class="card"><h3>Concurrent events to code as dummies or discuss</h3>
+<p class="note">Aug 2025 tax change (above) · Aug–Sep 2025 domestic unrest, which OJK commented on · Mar 2026 ICEx launch (new competing exchange/clearing/custody infrastructure) · Jul 2025 formal start of DFA trading operations under the new OJK framework · global crypto price cycle (no control series in this estimate — a global volume or Bitcoin-price control would change all numbers).</p></div>
+</section>
+
+<!-- ============ ASEAN ============ -->
+<section id="ax" class="hide">
+<h2>ASEAN regulatory map <span class="badge real">REAL</span></h2>
+<p class="note">Hover a country for its count; click for its strategy and full milestone list. The bars rank jurisdictions by documented actions — numbers on a map beat pie charts for reading at a glance, and Singapore is too small for a slice.</p>
+<div class="mapwrap">
+<div id="seamap"></div>
+<div class="card" id="axbars"></div>
+</div>
+<div class="axpanel">
+<div class="card" id="axtour"></div>
+<div class="card" id="axdetail"></div>
+</div>
+</section>
+
+<!-- ============ METHOD ============ -->
+<section id="me" class="hide"><h2>Method and limits</h2>
+<div class="card"><h3>The method in one line</h3>
+<p>We test whether Indonesian crypto transaction volumes changed at the Bappebti→OJK handover (10 Jan 2025) using an interrupted time series on 45 months of data (Jan 2023 – Sep 2026), following the validity framework of <a href="https://www.nber.org/papers/w26080">Baicker &amp; Svoronos (2019)</a>. No control country is in the regression — so every result is labelled single-ITS, not causal.</p></div>
+<div class="card"><h3>How the design protects itself</h3>
+<ul>
+<li><b>Fake interruption dates.</b> The model is re-run at made-up event dates; if fakes reproduce the real estimate, the result is discarded as unidentified. This killed the level-shift form and the tax-change ITS — and the handover growth-break passed.</li>
+<li><b>Two functional forms, both shown.</b> The 2024 recovery breaks the level form; the growth form is the defensible one. The failure is published, not hidden.</li>
+<li><b>Confounders on the timeline.</b> Tax change, unrest, ICEx launch — coded explicitly and listed beside every estimate.</li>
+<li><b>Pre-specified plan.</b> Question, variables and placebo strategy were written before looking at results (analysis_plan.md in the repository).</li>
+</ul></div>
+<div class="card"><h3>What the data can and cannot say</h3>
+<ul>
+<li><b>Can say:</b> "no change was detectable at the handover, and the design was tested against fake interruption dates."</li>
+<li><b>Cannot say:</b> "the handover had no effect." That needs a control series; this tracker says so wherever a number appears.</li>
+</ul></div>
+<div class="card"><h3>Data limits</h3>
+<ul>
+<li>45 monthly observations (24 pre / 21 post) — standard errors are wide.</li>
+<li>14 of 45 months are derived from cumulative reports (flagged on charts); 2022 is annual-only.</li>
+<li>Jan–Jun 2025 cumulative and summed monthlies differ by ~2.7T; disclosed, not smoothed.</li>
+<li>All figures are press-transmitted official statements — swap in OJK's first-hand statistics before publication-grade use.</li>
+</ul></div>
+<p class="note" style="margin-top:8px"><b>Primary methods reference:</b> Baicker, K. &amp; Svoronos, T. (2019), <i>Testing the Validity of the Single Interrupted Time Series Method</i>, NBER Working Paper 26080. <a href="https://www.nber.org/papers/w26080">nber.org/papers/w26080</a></p>
+</section>
+
+<!-- ============ PRELIMINARY CONCLUSION ============ -->
+<section id="pc" class="hide"><h2>What have we learned so far?</h2>
+<div class="card"><h3>Three takeaways the charts support</h3>
+<div class="moves">
+<div class="mv"><div class="mvd">1 · Continuity worked</div><div class="mvt">The handover did not disturb the market</div><div class="mvx">No detectable growth break at the transfer (p = 0.117), and the design passed its placebo tests. For a regulator taking over a two-trillion-rupiah-a-year market mid-cycle, "nothing happened" is the success outcome — supervision moved without repricing the market.</div><div class="mvs">Confidence: moderate — single-ITS, wide intervals</div></div>
+<div class="mv"><div class="mvd">2 · Policy moves prices less than the cycle does</div><div class="mvt">Global crypto cycles dominate domestic rules</div><div class="mvx">2024's +335% boom has no matching Indonesian rule; the 2025–26 cooling tracks world prices. Every regulatory event in this window is swamped by the cycle, so policy should be read as operating on market structure (licences, custody, exchange competition), not on monthly volume.</div><div class="mvs">Confidence: high — visible in every specification</div></div>
+<div class="mv"><div class="mvd">3 · Where policy did bite, we can't measure it</div><div class="mvt">The tax increase is real but unidentified</div><div class="mvx">The Aug 2025 tax rise sits inside the unrest window and its placebo tests fail, so this tracker reports it as unidentified rather than guessing. The tax's observable footprint so far is behavioural, not statistical: VAT removal and the rate rise landed on a market already cooling.</div><div class="mvs">Confidence: this is a stated non-result, not an estimate</div></div>
+</div>
+</div>
+<div class="card" style="background:color-mix(in srgb,var(--ac) 5%,var(--card))"><h3>Protected by policy, or resilient to it?</h3>
+<p>Crypto isn't <b>protected by policy</b> — no lender of last resort, no deposit insurance, no bailout for a failing exchange. But that's also why its prices show <b>lower sensitivity to policy shocks</b>: valuations aren't anchored to interest rates and credit, so a single jurisdiction's policy moves transmit weakly.</p>
+<p>Traditional finance is the mirror image: protected by policy, and therefore sensitive to it.</p>
+<p class="note">Two sides of one mechanism — no safety net, no dependency. Preliminary: consistent with takeaway 1, but a proper test needs the control-series upgrade in <b>Method &amp; limits</b>. "Resilient" applies to market prices only, not institutional stability.</p></div>
+<div class="card"><h3>How far these conclusions reach</h3>
+<p class="note">Everything above rests on 45 monthly observations, single-ITS with passing placebos — "no change was detectable at the interruption, and the design was tested against fake interruption dates", not "the intervention had no effect." 14 of 45 months are derived residuals and all figures are press-transmitted official statements; intervals are wide. The strongest supported reading today is about market structure: supervision moved without repricing the market, and the rulebook is now complete (PADK 3/2026) with a second exchange competing — volume follows the global cycle, structure follows policy.</p></div>
+</section>
+
+<h2 style="margin-top:30px">Sources</h2>
+<div class="card"><p class="note">
+OJK statistics: <a href="https://ojk.go.id/id/statistik/itsk/statistik-aset-keuangan-dan-aset-kripto/default.aspx">Statistik Aset Keuangan Digital dan Aset Kripto</a> (official; replaces press figures when accessible) ·
+FY2025 and monthly figures: <a href="https://www.idnfinancials.com/news/60390/crypto-transactions-in-indonesia-hit-idr-482-trillion-in-2025">IDN Financials</a>, <a href="https://infobanknews.com/ojk-catat-transaksi-aset-kripto-2025-tembus-rp482-triliun/">Infobank</a>, <a href="https://market.bisnis.com/read/20251009/94/1918938/ojk-transaksi-aset-kripto-turun-jadi-rp3864-triliun-pada-september-2025">Bisnis</a>, <a href="https://ekonomi.republika.co.id/berita/t75b5a370/transaksi-aset-kripto-november-2025-capai-rp-3720-triliun">Republika</a>, <a href="https://finance.detik.com/fintech/d-8095917/nilai-transaksi-kripto-ri-melesat-tembus-rp-276-45-t/amp">Detik</a>, <a href="https://wartaekonomi.co.id/read575600/makin-diminati-jumlah-konsumen-aset-kripto-capai-rekor-baru">Warta Ekonomi</a> ·
+2026 monthly: OJK RDKB <a href="https://ojk.go.id/id/berita-dan-kegiatan/siaran-pers/Documents/Pages/RDKB-Maret-2026/SP%2065%20Stabilitas%20Sektor%20Jasa%20Keuangan%20Terjaga%20di%20Tengah%20Meningkatnya%20Ketidakpastian%20Global%20RDKB%20Maret%202026.pdf">Mar 2026 press release</a> and Crypto Literacy Month 2026 release ·
+POJK 27/2024 &amp; <a href="https://ojk.go.id/id/regulasi/Pages/POJK-23-2025-Perubahan-POJK-27-Tahun-2024-tentang-Penyelenggaraan-Perdagangan-Aset-Keuangan-Digital-Termasuk-Aset-Kripto.aspx">POJK 23/2025</a>: OJK regulation pages; <a href="https://www.allenandgledhill.com/publication/articles/29790/financial-services-authority-sets-out-framework-for-trading-of-digital-financial-assets-in-new-regulation?agreed=cookiepolicy">Allen &amp; Gledhill summary</a> ·
+Transition: <a href="https://www.lexology.com/library/detail.aspx?g=7a498fdd-ad79-4f74-a489-a33f94eac135">Lexology</a> ·
+Tax: <a href="https://www.reuters.com/sustainability/boards-policy-regulation/indonesia-raise-tax-rate-crypto-transactions-2025-07-30">Reuters</a>, <a href="https://www.taxathand.com/article/40279/Indonesia/2025/MoF-regulation-introduces-substantial-updates-to-crypto-asset-transaction-taxation">Deloitte Tax@Hand</a>, <a href="https://www.alvarezandmarsal.com/thought-leadership/pmk-50-pmk-53-and-pmk-54-redefine-indonesian-crypto-asset-taxation-in-2025">A&amp;M</a> ·
+ICEx: <a href="https://www.tradingview.com/news/chainwire:3925bb25f094b:0-indonesia-brings-stock-market-infrastructure-to-crypto-icex-group-among-builders-of-new-infrastructure">Chainwire/TradingView</a>, DealStreetAsia ·
+Bappebti 2024 &amp; annual: <a href="https://www.tempo.co/ekonomi/perdagangan-aset-kripto-di-bappebti-capai-rp-650-61-triliun-di-tahun-2024-1198410">Tempo</a>, <a href="https://news.ddtc.co.id/berita/nasional/1801470/transaksi-kripto-januari-februari-2024-naik-dua-kali-lipat">DDTC News</a>, <a href="https://bappebti.go.id/resources/docs/Lapkin%20Bappebti%202022.pdf">Bappebti Laporan Kinerja 2022</a> ·
+Singapore (ASEAN tab only): <a href="https://www.mas.gov.sg/news/media-releases/2023/mas-finalises-stablecoin-regulatory-framework">stablecoin framework (15 Aug 2023)</a>, <a href="https://www.mas.gov.sg/schemes-and-initiatives/project-guardian">Project Guardian</a>, <a href="https://www.gibsondunn.com/singapore-publishes-draft-legislation-to-implement-its-stablecoin-framework">Gibson Dunn on draft stablecoin law</a>
+</p></div>
+
+<div class="ovl hide" id="wizovl"><div class="wiz" id="wizbox"></div></div>
+<button class="guidebtn" id="guidebtn" title="Open the guided setup">Guide</button>
+<div id="tip"></div>
+<div id="errbar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:80;background:var(--rd);color:#fff;font:13px system-ui,sans-serif;padding:8px 14px"></div>
+
+<script>
+var C={id:"#0f6e56",sg:"#3b6fb6",wn:"#b4531a",mu:"#6b6a65"};
+var $=function(i){return document.getElementById(i)};
+window.addEventListener("error",function(e){var b=$("errbar");if(b){b.style.display="block";b.textContent="Script error: "+e.message+" (line "+e.lineno+")"}});
+function drawSafe(fn,id){try{fn()}catch(e){var el=$(id);if(el)el.innerHTML="<p class='note' style='color:var(--rd)'>This chart failed to render: "+esc(String(e&&e.message||e))+"</p>";if(window.console)console.error(e)}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]})}
+
+/* ---- tooltip layer ---- */
+function showTip(html,x,y){var t=$("tip");t.innerHTML=html;t.className="on";var w=t.offsetWidth||200,h=t.offsetHeight||60;var px=Math.min(Math.max(8,x+14),window.innerWidth-w-10),py=(y-h-16<8)?(y+20):(y-h-16);t.style.left=px+"px";t.style.top=py+"px"}
+function hideTip(){$("tip").className=""}
+function wireChart(el,pts,W,H){
+ var svg=el.querySelector("svg");if(!svg||!pts.length)return;
+ var cs=svg.querySelectorAll("circle.pt"),cur=null;
+ svg.onmousemove=function(e){
+  var r=svg.getBoundingClientRect(),vx=(e.clientX-r.left)/r.width*W;
+  var best=-1,bd=1e9;
+  for(var i=0;i<pts.length;i++){var d=Math.abs(pts[i][0]-vx);if(d<bd){bd=d;best=i}}
+  if(best<0||bd>28){if(cur){cur.setAttribute("r",cur.getAttribute("data-r"));cur=null}hideTip();return}
+  if(cur&&cur!==cs[best])cur.setAttribute("r",cur.getAttribute("data-r"));
+  cur=cs[best];cur.setAttribute("r",5.2);
+  showTip(pts[best][2],e.clientX,e.clientY);
+ };
+ svg.onmouseleave=function(){if(cur)cur.setAttribute("r",cur.getAttribute("data-r"));cur=null;hideTip()};
+}
+function wireBars(el){
+ el.querySelectorAll("rect[data-h]").forEach(function(rc){
+  rc.onmousemove=function(e){rc.style.opacity=1;showTip(rc.getAttribute("data-h"),e.clientX,e.clientY)};
+  rc.onmouseleave=function(){rc.style.opacity="";hideTip()};
+ });
+}
+/* what happened that month: dated actions from the timeline + ASEAN layer (populated after EV/AXEV are defined) */
+var ACTM={};
+
+/* ---- REAL data ---- */
+/* monthly crypto transaction value, Rp trillion. [month, value, imputed?] — imp=1 means derived/estimated
+   (split evenly from reported combined or cumulative figures), not separately reported. */
+var M=[
+["2023-01",12.13,1],["2023-02",13.81,1],["2023-03",12.54,0],["2023-04",10.77,0],
+["2023-05",9.30,1],["2023-06",9.30,1],["2023-07",9.30,1],["2023-08",9.30,1],
+["2023-09",7.96,0],["2023-10",10.50,1],["2023-11",22.17,1],["2023-12",22.17,1],
+["2024-01",21.57,0],["2024-02",33.69,0],["2024-03",102.74,0],["2024-04",52.26,0],
+["2024-05",49.82,0],["2024-06",41.67,0],["2024-07",42.34,0],["2024-08",48.92,0],
+["2024-09",33.67,0],["2024-10",48.44,0],["2024-11",81.40,0],["2024-12",94.08,0],
+["2025-01",44.07,0],["2025-02",32.62,1],["2025-03",32.62,1],["2025-04",35.61,0],
+["2025-05",49.57,0],["2025-06",32.31,0],["2025-07",52.46,0],["2025-08",45.21,0],
+["2025-09",38.64,0],["2025-10",49.29,0],["2025-11",37.23,0],["2025-12",32.68,0],
+["2026-01",29.24,0],["2026-02",24.33,0],["2026-03",22.82,1],["2026-04",22.82,1],
+["2026-05",22.82,1],["2026-06",28.58,0],["2026-07",20.52,0],["2026-08",23.16,0],
+["2026-09",30.56,0]];
+var YRS=[[2021,859.4],[2022,306.4],[2023,149.25],[2024,650.61],[2025,482.23]];
+var MARKS=[["2025-01","OJK takeover"],["2025-08","Tax change"],["2026-03","ICEx launch"]];
+var EV=[
+ {d:"2022-08",j:"id",t:"Taxation",b:"PMK 68/2022",p:"0.1% final income tax plus 11% VAT on domestic crypto sales — the first dedicated crypto tax framework."},
+ {d:"2023-01",j:"id",t:"Market structure",b:"P2SK Law (Law 4/2023)",p:"Financial Sector Development and Strengthening law — legal basis for moving crypto oversight from Bappebti to OJK within two years."},
+ {d:"2023-07",j:"id",t:"Licensing",b:"CFX national crypto exchange launched",p:"State-backed exchange and clearing house under Bappebti-era rules."},
+ {d:"2024-12",j:"id",t:"Licensing",b:"POJK 27/2024 issued",p:"OJK framework for digital financial asset (DFA) trading including crypto; adopts Bappebti's rules with refinements — the continuity design."},
+ {d:"2025-01",j:"id",t:"Market structure",b:"Oversight transfers Bappebti → OJK (10 Jan)",p:"Crypto reclassified from commodity to financial-sector activity. Part of supervision also moves toward Bank Indonesia. THE event date of this project."},
+ {d:"2025-07",j:"id",t:"Licensing",b:"DFA trading operations formally start (10 Jul)",p:"Operational start of trading under the new OJK framework."},
+ {d:"2025-08",j:"id",t:"Taxation",b:"PMK 50/2025 effective (1 Aug)",p:"Final income tax on domestic-exchange sales raised 0.1% → 0.21%; VAT on purchases removed; foreign-exchange sales taxed at 1%. Replaces PMK 68/2022."},
+ {d:"2025-08",j:"id",t:"Confounders",b:"Domestic unrest (Aug–Sep)",p:"Nationwide protests; OJK publicly commented on market impact. Overlaps the tax-change window — a confounder for the event study."},
+ {d:"2025-11",j:"id",t:"Custody",b:"OJK draft follow-up DFA regulation",p:"Draft rule circulating Nov 2025 on DFA activities; custody and operational requirements refined."},
+ {d:"2025-12",j:"id",t:"Market structure",b:"POJK 23/2025",p:"Amends POJK 27/2024 to extend the framework to DFA derivatives."},
+ {d:"2026-03",j:"id",t:"Market structure",b:"ICEx Group launch (18 Mar)",p:"International Crypto Exchange launches with OJK licences: ICEx exchange (KEP-2/D.07/2026), CACI clearing (KEP-12/D.07/2026), ICC custody. US$70M raised; competes with CFX."},
+ {d:"2026-09",j:"id",t:"Licensing",b:"PADK 3/2026",p:"OJK implementing guidelines for the amended DFA trading rules."}
+];
+/* ASEAN context milestones (jurisdictions: sg, th, my, vn, ph, rg) */
+var AXEV=[
+ {d:"2020-01",j:"sg",b:"Payment Services Act in force",p:"Digital payment token (DPT) service licensing framework begins."},
+ {d:"2022-10",j:"sg",b:"Financial Services and Markets Act 2022",p:"Unified markets and licensing framework; local-presence requirement for digital asset service providers (in force Apr 2023)."},
+ {d:"2022-05",j:"sg",b:"Project Guardian pilots begin",p:"MAS-industry asset-tokenization pilots; runs 2022–2025, producing the '2024 Reflections, 2025 Directions' report and a Nov 2024 'pathways to scale' agenda."},
+ {d:"2023-08",j:"sg",b:"Stablecoin framework finalised (15 Aug)",p:"Regulatory approach for single-currency stablecoins (SGD/G10): reserve backing, redemption, disclosure and intermediation rules. To be legislated via PS Act amendments."},
+ {d:"2024-04",j:"sg",b:"PS Act amendments in force",p:"Expanded DPT definitions bring digital-asset custody and related services squarely into the licensed perimeter."},
+ {d:"2026-06",j:"sg",b:"Draft stablecoin legislation published",p:"Draft law implementing the stablecoin framework; consultation closes 16 Oct 2026, effect expected thereafter."},
+ {d:"2018-05",j:"th",b:"Royal Decree on Digital Asset Businesses",p:"Thailand's SEC becomes the digital-asset regulator: exchange, broker and dealer licensing framework."},
+ {d:"2024-08",j:"th",b:"Digital asset regulatory sandbox launched",p:"Broad SEC sandbox covering digital-asset services, precursor to the 2025 payment experiments."},
+ {d:"2025-09",j:"th",b:"Five-year capital-gains tax exemption (retroactive to 1 Jan)",p:"0% personal income tax on crypto gains from trades on SEC-licensed platforms through 2029 — an explicit regional-hub play."},
+ {d:"2025-08",j:"th",b:"TouristDigiPay sandbox announced (18 Aug)",p:"Tourists convert digital assets to baht via PromptPay QR; ~18-month sandbox from Q4 2025. Conversion mechanism, not direct payment."},
+ {d:"2019-01",j:"my",b:"Prescription Order: digital assets as securities",p:"Capital Markets and Services (Prescription of Securities) Order brings digital currency and tokens under the Securities Commission."},
+ {d:"2024",j:"my",b:"Recognized Markets guidelines revised for DAX",p:"SC updates the RMO guidelines for digital asset exchanges; licensed-DAX trading value reaches RM17.14B in 2025 (+23%)."},
+ {d:"2026-02",j:"my",b:"Digital asset broking requirements clarified",p:"CMSL holders must notify the SC in advance and file a validated declaration before offering broking services."},
+ {d:"2017",j:"vn",b:"Decree 52 / Circular 10: payments in crypto banned",p:"Years of grey-market status: ownership tolerated, payments and issuance prohibited."},
+ {d:"2025-06",j:"vn",b:"Law on Digital Technology Industry passed (71/2025/QH15)",p:"First statutory recognition of digital assets in Vietnam: payment, security, utility and mixed tokens; crypto assets explicitly exclude securities."},
+ {d:"2026-01",j:"vn",b:"Law takes force; crypto-asset market pilot begins",p:"Pilot program framework launches; issuers must publish a prospectus 15 days before offering; offerings to foreign investors restricted."},
+ {d:"2021-01",j:"ph",b:"BSP Circular 1108: VASP licensing guidelines",p:"Bangko Sentral licenses crypto-to-fiat service providers under AMLC registration."},
+ {d:"2022-09",j:"ph",b:"Three-year moratorium on new VASP licences (M-2022-035)",p:"BSP stops accepting new licence applications from 1 Sep 2022, expiring ~Sep 2025 — the regional outlier in restriction."},
+ {d:"2024-10",j:"rg",b:"BIS Project Mandala phase 1 demonstrated",p:"Compliance-by-design for cross-border payments; central-bank partners include MAS and Bank Negara Malaysia (with RBA, BoJ, BOK)."},
+ {d:"2026-07",j:"rg",b:"Indonesia passes IFC bill: Jakarta then Bali centres",p:"Parliament approves international financial centres (Bali at Kura Kura SEZ), with digital assets among the pillars and 50-year tax incentives reported — the regional-hub ambition formalised."}
+];
+EV.forEach(function(e){(ACTM[e.d]=ACTM[e.d]||[]).push(e.b)});
+AXEV.forEach(function(e){if(e.d.length>4)(ACTM[e.d]=ACTM[e.d]||[]).push(e.b)});
+/* attention counts derived from EV (Indonesia) and AXEV (regional context) */
+var THEMES=["Market structure","Licensing","Stablecoin","Tokenization","Custody","Taxation"];
+function counts(j){var c={};THEMES.forEach(function(t){c[t]=0});EV.forEach(function(e){if(e.j==j&&c[e.t]!=null)c[e.t]++});return c}
+
+/* ---- charts ---- */
+function line(el,series,o){
+ if(!el)return;
+ var W=680,H=o.h||260,L=44,R=10,T=12,B=28,xs=[],ys=[],reg=[];
+ series.forEach(function(s){s.pts.forEach(function(p){if(p.v!=null){xs.push(p.t);ys.push(p.v)}})});
+ if(!xs.length){el.innerHTML="<p class='note'>No data.</p>";return}
+ var x0=Math.min.apply(0,xs),x1=Math.max.apply(0,xs),y0=Math.min.apply(0,ys),y1=Math.max.apply(0,ys);
+ if(x1==x0)x1=x0+1;var pad=(y1-y0)*.1;y0=Math.max(0,y0-pad);y1+=pad;
+ var X=function(v){return L+(v-x0)/(x1-x0)*(W-L-R)},Y=function(v){return H-B-(v-y0)/(y1-y0)*(H-B-T)};
+ var g="<svg viewBox='0 0 "+W+" "+H+"'>";
+ for(var i=0;i<=4;i++){var v=y0+(y1-y0)*i/4;g+="<line x1='"+L+"' x2='"+(W-R)+"' y1='"+Y(v)+"' y2='"+Y(v)+"' stroke='var(--ln)'/><text x='4' y='"+(Y(v)+4)+"'>"+v.toFixed(o.dec!=null?o.dec:0)+"</text>"}
+ for(i=0;i<=4;i++){var xv=x0+(x1-x0)*i/4;g+="<text x='"+X(xv)+"' y='"+(H-8)+"' text-anchor='middle'>"+o.xl(xv)+"</text>"}
+ (o.marks||[]).forEach(function(mk){if(mk[0]>=x0&&mk[0]<=x1)g+="<line x1='"+X(mk[0])+"' x2='"+X(mk[0])+"' y1='"+T+"' y2='"+(H-B)+"' stroke='var(--tx)' stroke-dasharray='4 3' opacity='.55'/><text x='"+(X(mk[0])+4)+"' y='"+(T+10)+"'>"+esc(mk[1])+"</text>"});
+ (o.hlines||[]).forEach(function(hl){if(hl.v>=y0&&hl.v<=y1)g+="<line x1='"+L+"' x2='"+(W-R)+"' y1='"+Y(hl.v)+"' y2='"+Y(hl.v)+"' stroke='"+(hl.color||C.wn)+"' stroke-dasharray='6 4'/><text x='"+(W-R-4)+"' y='"+(Y(hl.v)-4)+"' text-anchor='end' fill='"+(hl.color||C.wn)+"'>"+esc(hl.label||"")+"</text>"});
+ series.forEach(function(s,k){var col=s.color||C.id;
+  for(var j=1;j<s.pts.length;j++){var a=s.pts[j-1],b2=s.pts[j];if(a.v==null||b2.v==null)continue;
+   g+="<path fill='none' stroke='"+col+"' stroke-width='1.8'"+((a.imp||b2.imp)?" stroke-dasharray='5 4'":"")+" d='M"+X(a.t).toFixed(1)+" "+Y(a.v).toFixed(1)+"L"+X(b2.t).toFixed(1)+" "+Y(b2.v).toFixed(1)+"'/>"}
+  s.pts.forEach(function(p){if(p.v==null)return;
+   g+="<circle class='pt' data-r='"+(p.imp?3.2:2.6)+"' cx='"+X(p.t).toFixed(1)+"' cy='"+Y(p.v).toFixed(1)+"' r='"+(p.imp?3.2:2.6)+"' fill='"+(p.imp?"var(--card)":col)+"' stroke='"+col+"' stroke-width='1.6'/>";
+   reg.push([X(p.t),Y(p.v),o.fmt?o.fmt(p):"<b>"+esc(p.lab||"")+"</b>"+p.v+(p.imp?" <span class='e'>derived, not measured</span>":"")]);
+  });
+ });
+ el.innerHTML=g+"</svg>";wireChart(el,reg,W,H)}
+function bars(el,data,labs,o){
+ if(!el)return;
+ var W=680,H=240,L=44,R=10,T=12,B=28,mx=Math.max.apply(0,data.map(function(d){return d[1]}))*1.12;
+ var Y=function(v){return H-B-v/mx*(H-B-T)},bw=(W-L-R)/data.length;
+ var g="<svg viewBox='0 0 "+W+" "+H+"'>";
+ for(var i=0;i<=4;i++){var v=mx*i/4;g+="<line x1='"+L+"' x2='"+(W-R)+"' y1='"+Y(v)+"' y2='"+Y(v)+"' stroke='var(--ln)'/><text x='4' y='"+(Y(v)+4)+"'>"+v.toFixed(0)+"</text>"}
+ data.forEach(function(d,k){var x=L+k*bw+bw*.15,w2=bw*.7;g+="<rect class='hb' data-h=\"<b>"+labs[k]+"</b>Rp"+d[1]+" trillion"+(k==data.length-1?"<span class='e'>first full OJK year</span>":"")+"\" x='"+x.toFixed(1)+"' y='"+Y(d[1]).toFixed(1)+"' width='"+w2.toFixed(1)+"' height='"+(H-B-Y(d[1])).toFixed(1)+"' fill='"+(o.color||C.id)+"' opacity='"+(k==data.length-1?"1":".8")+"'/><text x='"+(x+w2/2)+"' y='"+(Y(d[1])-4)+"' text-anchor='middle'>"+d[1]+"</text><text x='"+(x+w2/2)+"' y='"+(H-8)+"' text-anchor='middle'>"+labs[k]+"</text>"});
+ el.innerHTML=g+"</svg>";wireBars(el)}
+
+/* ---- render: market ---- */
+function drawMarket(){
+ var pts=M.map(function(r){return {t:new Date(r[0]+"-15").getTime(),v:r[1],imp:r[2],lab:r[0]}});
+ line($("mchart"),[{pts:pts,color:C.id}],{marks:MARKS.map(function(mk){return [new Date(mk[0]+"-15").getTime(),mk[1]]}),dec:0,
+  xl:function(v){var d=new Date(v);return d.getUTCFullYear()+"-"+("0"+(d.getUTCMonth()+1)).slice(-2)},
+  fmt:function(p){var mo=p.lab.slice(0,7),h="<b>"+p.lab+"</b>Rp"+p.v+" trillion "+(p.imp?"<span class='e'>derived from combined/cumulative reports</span>":"<span class='e'>as reported by the regulator</span>");
+   if(ACTM[mo])h+="<span class='e'>That month: "+ACTM[mo].map(esc).join(" · ")+"</span>";
+   return h}});
+ bars($("ychart"),YRS,YRS.map(function(d){return d[0]}),{color:C.id});
+}
+/* ---- timeline ---- */
+var jSel="all",tSel="all";
+var TLNARR={
+ all:"Every entry is a move in one rewiring: law (P2SK) → framework (POJK 27/2024) → transfer (Jan 2025) → refinements (derivatives, draft rules, PADK). This sequence is exactly what the event-study tab tests — the handover was designed as continuity, and these dates show it.",
+ id:"Every entry is a move in one rewiring: law (P2SK) → framework (POJK 27/2024) → transfer (Jan 2025) → refinements (derivatives, draft rules, PADK). This sequence is exactly what the event-study tab tests — the handover was designed as continuity, and these dates show it."
+};
+function drawTL(){
+ jSel="all";
+ var tcs=[["all","All themes"]].concat(THEMES.map(function(t){return [t,t]}),[["Confounders","Confounders"]]);
+ $("jchips").style.display="none";
+ $("tchips").innerHTML=tcs.map(function(c){return "<button class='chip"+(tSel==c[0]?" on":"")+"' data-t='"+esc(c[0])+"'>"+c[1]+"</button>"}).join("");
+ var list=EV.filter(function(e){return (jSel=="all"||e.j==jSel)&&(tSel=="all"||e.t==tSel)}).sort(function(a,b){return a.d<b.d?-1:1});
+ var colon={id:C.id,sg:C.sg};
+ var MOS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ var ERALBL={2022:"Early market — crypto traded as a commodity",2023:"The pivot year — law passed, exchange launched",2024:"The handover is prepared — framework, then transfer",2025:"The transition year — new rules, new tax, new unrest",2026:"The infrastructure year — second exchange, complete rulebook"};
+ var out="",lastYr="",d=0;
+ list.forEach(function(e){
+  var yr=e.d.slice(0,4);
+  if(yr!=lastYr){out+="<div class='tlyear'>"+yr+" — "+(ERALBL[yr]||"")+"</div>";lastYr=yr}
+  out+="<div class='ev' style='--dotc:"+colon[e.j]+";--d:"+(d++)+"'><span class='d'>"+MOS[+e.d.slice(5)-1]+" "+yr+"</span><span class='th'>"+esc(e.t)+"</span><br><b>"+esc(e.b)+"</b><p>"+esc(e.p)+"</p></div>";
+ });
+ $("tlist").innerHTML=(list.length?"<div class='tlnarr'>"+TLNARR[jSel==( "all")?"all":jSel]+"</div>"+out:"<p class='note'>No milestones match this filter.</p>");
+ $("jchips").querySelectorAll(".chip").forEach(function(b){b.onclick=function(){jSel=b.dataset.j;drawTL()}});
+ $("tchips").querySelectorAll(".chip").forEach(function(b){b.onclick=function(){tSel=b.dataset.t;drawTL()}});
+}
+/* ---- attention: removed (milestone counts duplicated the timeline; superseded by ASEAN map) ---- */
+/* ---- ASEAN map ---- */
+var AXD={
+ id:{n:"Indonesia",c:"#0f6e56",tg:"Reclassify & build",h:"Southeast Asia’s largest crypto market moved from commodity supervision to financial regulation — with exchange, clearing and custody rebuilt around it.",d:"Crypto moved from commodity (Bappebti) to financial sector (OJK, POJK 27/2024). New exchange, clearing and custody infrastructure (CFX, ICEx), derivatives rules (POJK 23/2025), international financial centres in development."},
+ sg:{n:"Singapore",c:"#3b6fb6",tg:"Liberalise to attract",h:"The regional hub: licensed exchanges, a stablecoin framework heading into law, and industry tokenization pilots under MAS.",d:"PS Act licensing, stablecoin framework (Aug 2023) heading into legislation, custody inside the perimeter (2024), Project Guardian tokenization pilots."},
+ th:{n:"Thailand",c:"#a8791f",tg:"Compete on tax",h:"Competing on tax: zero capital-gains on licensed-platform trades through 2029, plus a crypto-payment sandbox for tourists.",d:"SEC licensing since 2018; 0% capital-gains on licensed-platform trades through 2029, retroactive to Jan 2025; TouristDigiPay tourist sandbox."},
+ my:{n:"Malaysia",c:"#2a9d8f",tg:"Consolidate",h:"Securities law from day one, licensed exchanges only, and RM17 billion a year in regulated trading volume.",d:"Digital assets as securities since 2019; licensed DAX market worth RM17.1B in 2025 (+23%); broking requirements clarified Feb 2026."},
+ vn:{n:"Vietnam",c:"#8a4fa3",tg:"Legalise",h:"One of the world’s largest crypto-owning populations got a legal route in: statutory recognition plus a pilot market from Jan 2026.",d:"Payments banned since 2017; the Digital Technology Industry Law (in force Jan 2026) recognises digital assets and starts a market pilot with foreign-investor limits."},
+ ph:{n:"Philippines",c:"#c0392b",tg:"Restrict",h:"The regional outlier: a three-year freeze on new licences (2022–2025) while every neighbour opened up.",d:"BSP Circular 1108 (2021), then a three-year moratorium on new VASP licences (Sep 2022–2025)."},
+ rg:{n:"Regional",c:"#5a6b73",tg:"Cross-border layer",h:"The cross-border layer: compliance-embedded payment rails (BIS Project Mandala) and Indonesia’s international financial centre ambitions.",d:"BIS Project Mandala compliance-by-design (MAS, Bank Negara Malaysia and partners, 2024); Indonesia's international financial centre bill (Jul 2026)."}
+};
+var GEO=[
+ {k:null,pts:[[92.6,21.2],[93.2,20.2],[94.5,18.5],[95.8,17.5],[96.5,16.2],[97.6,16.4],[98.2,17.5],[98.6,19.2],[98.8,20.2],[99,21.5],[98.3,23.5],[97.5,24.2],[96,25.5],[95.2,26.5],[94.5,25.2],[93.5,24],[92.6,23.2],[92.3,21.8],[92.6,21.2]]},
+ {k:null,pts:[[100.4,19.6],[101.2,21.2],[102.5,22.4],[104.5,22.6],[105.8,21.5],[106.8,19.8],[107.4,17.5],[107.3,15.8],[106,14.6],[105.2,15.3],[104,16.4],[103.2,18],[102.2,18.6],[101,19]]},
+ {k:null,pts:[[102.9,13.5],[104.5,13.4],[106,13.2],[107.2,12.2],[106.8,11.3],[105.3,10.9],[104.2,10.4],[103,10.6],[102.4,12.2],[102.9,13.5]]},
+ {k:null,pts:[[141,-2.7],[143.5,-4],[145.8,-5.6],[147.5,-7.5],[149,-9.2],[147.8,-10.2],[146,-9.5],[144.5,-8.2],[143,-7],[141.5,-5.5],[141,-4],[141,-2.7]]},
+ {k:"th",pts:[[97.7,16.3],[98,17.8],[98.9,19.5],[100,20.3],[101.2,19.6],[102,18.4],[103.4,18.3],[104.5,17.6],[105.2,16],[104.8,14.9],[103.6,11.8],[102.9,12.6],[101.6,13.2],[100.9,13.9],[100.2,13.4],[99.9,12],[99.2,9.8],[100.4,8],[100.9,6.8],[101.8,6.2],[101.3,5.7],[100.6,6.4],[100.1,7.5],[99.4,9],[98.8,10.5],[98.3,12.2],[98,13.6],[97.8,15],[97.7,16.3]]},
+ {k:"vn",pts:[[105.7,22.5],[106.8,22.7],[107.9,21.3],[106.8,20.3],[106.3,19],[107.5,17.5],[108.7,15.9],[109.3,13.7],[108.9,11.8],[107.5,10.8],[106.6,10.4],[106.2,9.5],[104.9,8.7],[104.8,9.8],[105.3,11.3],[104.7,12.6],[103.9,13.5],[104.2,14.7],[105.3,15.8],[105.6,17.3],[104.9,18.6],[105,19.8],[106,21.2],[105.7,22.5]]},
+ {k:"id",pts:[[95.4,5.3],[97.2,4.2],[98.5,2.8],[99.7,1.2],[101,0],[102.3,-1.4],[103.6,-2.9],[104.5,-4.2],[105.8,-5.8],[105.4,-5.9],[104.3,-5.6],[103.2,-5.2],[101.9,-3.9],[100.4,-2.1],[99.2,-0.4],[98.2,1],[97.3,2.6],[96.3,4.2],[95.4,5]]},
+ {k:"id",pts:[[105.4,-6],[106.5,-6.1],[107.7,-6.3],[108.9,-6.6],[110.4,-6.9],[111.6,-7.1],[112.8,-7.2],[114.3,-7.6],[114.6,-8.3],[113.5,-8.4],[112,-8.4],[110.5,-8.2],[109,-8.1],[107.5,-7.7],[106.2,-7.3],[105.3,-6.8],[105.4,-6]]},
+ {k:"id",pts:[[109.2,1.6],[109.6,2.2],[109.8,4.2],[111,4.3],[112.5,4.9],[113.8,5.2],[115,4.9],[115.8,5.4],[116.5,6.4],[117.2,7],[118.1,6.8],[119.2,5.6],[118.6,4],[118.1,2.2],[117.5,1],[116.8,0.2],[116.2,-1.5],[115.8,-2.8],[114.7,-3.6],[113.5,-3.4],[112,-3.2],[110.8,-2.9],[109.5,-1.4],[109.2,-0.3],[108.9,0.8],[109.2,1.6]]},
+ {k:"my",pts:[[100.3,6.3],[101,5.6],[102.2,4.4],[103.4,2.6],[104.2,1.5],[103.9,1.2],[103,1.4],[102,2.5],[100.8,4],[99.9,5.2],[100.1,6.1],[100.3,6.3]]},
+ {k:"my",pts:[[109.7,1.9],[110.3,3.2],[110.8,4.3],[112.5,4.9],[113.8,5.2],[115,4.9],[115.8,5.4],[116.5,6.4],[117.2,7],[118.1,6.8],[119.2,5.6],[118.6,4],[118.1,2.2],[117.5,1],[116.8,0.2],[116,0.2],[114.5,1],[113,1.2],[111.5,1.3],[110.3,1.4],[109.7,1.9]]},
+ {k:"id",pts:[[119.8,0.8],[120.2,1.3],[121.2,1.2],[122.2,0.8],[123.2,0.6],[124.2,1.2],[125.1,1.6],[124.9,0.8],[123.8,0.2],[123,-0.4],[122.3,-1.2],[122.9,-2.5],[123.2,-4.1],[122.4,-5.4],[121.6,-4.8],[121.9,-3.4],[121.3,-2.9],[120.8,-1.8],[119.9,-1],[119.5,0.2],[119.8,0.8]]},
+ {k:"id",pts:[[130.8,-1.1],[132.5,-1.6],[134.4,-2.2],[136,-2.6],[137.9,-2.5],[139.5,-2.3],[141,-2.7],[141,-8.9],[139.2,-8.2],[137.5,-7.5],[135.5,-5.5],[134,-4.2],[132.8,-3.3],[131.5,-2.2],[130.5,-1.6],[130.8,-1.1]]},
+ {k:"ph",pts:[[119.9,18.4],[120.8,18.6],[122.1,18.4],[122.3,17.4],[121.6,16.5],[121.7,15.4],[122.5,14.6],[122.3,13.9],[121.2,13.9],[120.5,14.4],[120.5,15.6],[120.3,16.8],[119.9,18.4]]},
+ {k:"ph",pts:[[122.3,11.9],[123.4,12],[124.6,11.4],[125.4,10.9],[125,10.2],[123.9,10.4],[123,10.7],[122.2,11.2],[122.3,11.9]]},
+ {k:"ph",pts:[[121.9,9.6],[123.2,9.4],[124.6,9.1],[125.9,8.6],[126.5,7.6],[126.3,6.4],[125.4,5.7],[124.4,6.2],[123.4,7.2],[122.3,7.9],[121.9,8.6],[121.9,9.6]]}
+];
+function Pxy(lon,lat){return [(lon-92)/49*640+20,(25-lat)/36*360+20]}
+function cnt(k){return k=="id"?EV.filter(function(e){return e.j==k}).length:AXEV.filter(function(e){return e.j==k}).length}
+function evs(k){return (k=="id"?EV:AXEV).filter(function(e){return e.j==k}).sort(function(a,b){return a.d<b.d?-1:1})}
+var axSelC="id";
+function drawMap(){
+ var MOS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ var g="";
+ GEO.forEach(function(s){
+  var d=s.pts.map(function(pt,i){var p=Pxy(pt[0],pt[1]);return (i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)}).join("")+"Z";
+  if(s.k)g+="<path class='cty' data-k='"+s.k+"' tabindex='0' fill='"+AXD[s.k].c+"' d='"+d+"'/>";
+  else g+="<path class='land' d='"+d+"'/>";
+ });
+ g+="<circle cx='"+Pxy(103.85,1.3)[0].toFixed(1)+"' cy='"+Pxy(103.85,1.3)[1].toFixed(1)+"' r='6' fill='"+AXD.sg.c+"' stroke='var(--bg)' stroke-width='1.5' class='cty' data-k='sg' tabindex='0'/>";
+ [["id",110.5,-4.6],["th",99.6,14.5],["my",114.9,4.1],["vn",109.6,15.2],["ph",123.3,12.6],["sg",105.3,0.4]].forEach(function(b){
+  var p=Pxy(b[1],b[2]);
+  g+="<g class='bdg' data-k='"+b[0]+"' tabindex='0'><circle cx='"+p[0].toFixed(1)+"' cy='"+p[1].toFixed(1)+"' r='12' fill='var(--card)' stroke='"+AXD[b[0]].c+"' stroke-width='2'/><text x='"+p[0].toFixed(1)+"' y='"+(p[1]+4).toFixed(1)+"' text-anchor='middle' class='bl'>"+cnt(b[0])+"</text></g>";
+ });
+ [["ID",112,-2.2],["MY",102.2,3.6],["TH",101.3,16.4],["VN",107.8,18.3],["PH",126.8,12.4]].forEach(function(l){
+  var p=Pxy(l[1],l[2]);g+="<text x='"+p[0].toFixed(1)+"' y='"+p[1].toFixed(1)+"' text-anchor='middle'>"+l[0]+"</text>";
+ });
+ $("seamap").innerHTML="<svg viewBox='0 0 680 400'>"+g+"</svg>";
+ wireAx();
+ selAx(axSelC);
+}
+function wireAx(){
+ $("seamap").querySelectorAll(".cty,.bdg").forEach(function(n){
+  var k=n.getAttribute("data-k");
+  var h="<b>"+AXD[k].n+"</b>"+cnt(k)+" documented milestone"+(cnt(k)==1?"":"s")+"<span class='e'>click for the story</span>";
+  n.onmouseenter=function(e){showTip(h,e.clientX,e.clientY)};
+  n.onmouseleave=hideTip;
+  n.onclick=function(){selAx(k)};
+  n.onkeydown=function(e){if(e.key=="Enter"||e.key==" "){selAx(k)}};
+ });
+}
+var AXORDER=["id","sg","th","my","vn","ph","rg"];
+function selAx(k){
+ axSelC=k;
+ $("seamap").querySelectorAll(".cty").forEach(function(n){var kk=n.getAttribute("data-k");n.setAttribute("class","cty"+(kk==k?" sel":" dim"))});
+ $("seamap").querySelectorAll(".bdg").forEach(function(n){var kk=n.getAttribute("data-k");n.setAttribute("class","bdg"+(kk==k?" sel":" dim"))});
+ var d=AXD[k],list=evs(k),MOS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ $("axdetail").innerHTML="<span class='tg'>"+esc(d.tg)+"</span><h3>"+esc(d.n)+"</h3><p class='note'>"+esc(d.d)+"</p><ul>"+list.map(function(e){var lab=e.d.length>4?MOS[+e.d.slice(5)-1]+" "+e.d.slice(0,4):e.d;return "<li><span class='d'>"+lab+"</span><b>"+esc(e.b)+"</b></li>"}).join("")+"</ul>";
+ $("axbars").innerHTML="<h3 style='margin:0 0 6px;font:700 13px system-ui'>Milestones by jurisdiction</h3>"+Object.keys(AXD).map(function(k){var c=cnt(k),mx=12;return "<div class='axrow"+(k==axSelC?" sel":"")+"' data-k='"+k+"'><span class='nm'>"+esc(AXD[k].n)+"</span><span class='bar' style='width:"+Math.round(c/mx*110)+"px;background:"+AXD[k].c+"'></span><span class='ct'>"+c+"</span></div>"}).join("");
+ $("axbars").querySelectorAll(".axrow").forEach(function(r){r.onclick=function(){selAx(r.dataset.k)}});
+ var i=AXORDER.indexOf(k),p=AXORDER[(i+AXORDER.length-1)%AXORDER.length],n=AXORDER[(i+1)%AXORDER.length];
+ $("axtour").innerHTML="<div class='ctyhead'><span class='ctyname' style='color:"+AXD[k].c+"'>"+esc(AXD[k].n)+"</span><span class='hint' style='margin:0'>"+(i+1)+" / "+AXORDER.length+" · "+esc(AXD[k].tg)+"</span></div><p class='note' style='margin:8px 0 10px'>"+esc(AXD[k].h||"")+"</p><div class='tourbtns'><button class='chip' data-t='"+p+"'>← "+esc(AXD[p].n)+"</button><button class='chip' data-t='"+n+"'>"+esc(AXD[n].n)+" →</button></div>";
+ $("axtour").querySelectorAll(".chip").forEach(function(b){b.onclick=function(){selAx(b.dataset.t)}});
+}
+drawSafe(drawMap,"seamap");
+/* ---- event-study charts ---- */
+function drawGr(){
+ var g=M.map(function(r,i){return i?{t:i,v:Math.log(r[1])-Math.log(M[i-1][1]),m:r[0],imp:r[2]||M[i-1][2]}:null}).slice(1);
+ var pre=g.filter(function(p){return p.t<24}),post=g.filter(function(p){return p.t>=24});
+ var mp=mean(pre.map(function(p){return p.v})),mq=mean(post.map(function(p){return p.v}));
+ line($("grchart"),[{pts:pre,color:C.id},{pts:post,color:C.wn}],
+  {h:230,dec:2,xl:function(v){return g[Math.round(v)]?g[Math.round(v)].m.slice(2):""},
+   marks:[[24,"transfer"],[31,"tax"]],
+   fmt:function(p){return "<b>"+p.m+"</b>"+((Math.exp(p.v)-1)*100>=0?"+":"−")+Math.abs((Math.exp(p.v)-1)*100).toFixed(1)+"% monthly growth"+(p.imp?" <span class='e'>includes a derived month</span>":"")},
+   hlines:[{v:mp,color:C.id,label:"pre mean "+(Math.exp(mp)-1).toFixed(1).replace("-","−")+"%/mo"},{v:mq,color:C.wn,label:"post mean "+(Math.exp(mq)-1).toFixed(1)+"%/mo"}]});
+}
+function drawIts(){
+ var pts=M.map(function(r,i){return {t:i,v:Math.log(r[1]),m:r[0],imp:r[2]}});
+ // naive level-shift ITS fit: const 2.0245, t 0.1006, post 2.5363, t_post −0.1325 (event t=24)
+ function fit(i){return 2.0245+0.1006*i+(i>=24?2.5363:0)+(i>=24?(-0.1325*(i-24)):0)}
+ var fpre=[{t:0,v:fit(0)},{t:23,v:fit(23)}],fpost=[{t:24,v:fit(24)},{t:44,v:fit(44)}];
+ line($("itschart"),[{pts:pts,color:C.id,impMode:true},{pts:fpre,color:C.mu},{pts:fpost,color:C.mu}],
+  {h:230,dec:1,xl:function(v){return pts[Math.round(v)]?pts[Math.round(v)].m.slice(2):""},marks:[[24,"transfer"]]});
+}
+var mean=function(a){return a.reduce(function(s,x){return s+x},0)/a.length};
+drawSafe(drawGr,"grchart");drawSafe(drawIts,"itschart");
+/* ---- tabs ---- */
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){document.querySelectorAll(".tabs button").forEach(function(x){x.className=""});b.className="on";["mk","tl","es","ax","pc","me"].forEach(function(x){$(x).className=b.dataset.t==x?"":"hide"})}});
+drawSafe(drawMarket,"mchart");drawSafe(drawTL,"tlist");
+/* ---- clickable KPI cards ---- */
+var KPI={
+ fy25:{t:"FY2025: the first full year under OJK",b:"Rp482.23T traded across 2025 — a 25.9% drop from Bappebti's final year (Rp650.61T). But the year contains three overlapping stories the total hides: the 1 Aug tax rise (0.1%→0.21%, VAT removed), the Aug–Sep domestic unrest, and a global crypto cooling. The event study finds no break attributable to the handover itself.",ev:["2025-01","2025-08","2025-09"],lnk:"#mk",l:"See the monthly pattern"},
+ ytd26:{t:"2026: a cooler, more mature market",b:"Rp224.84T over nine months averages ~Rp25T/month — well below 2024's exuberant Rp54T/month average, and close to 2025's pace. The year's story is structural: the ICEx launch added a second exchange, clearing house and custodian in March, and PADK 3/2026 completed the rulebook in September.",ev:["2026-03","2026-09"],lnk:"#mk",l:"See the monthly pattern"},
+ sep26:{t:"September 2026: a rebound month",b:"Rp30.56T, up 32% from July–August's lows — but still a third below the 2024 monthly peaks. Single months are noisy; the nine-month trend matters more than any one print. Hover the market chart to compare any month against what regulators did that month.",ev:["2026-07","2026-09"],lnk:"#mk",l:"See the monthly pattern"},
+ users:{t:"23.2M registered consumers: the slower signal",b:"Account counts grow steadily (from ~20.7M in Jan 2026) regardless of volume swings — adoption behaves differently from trading value, which follows global price cycles. For the event study this makes it a cleaner second outcome: less confounded by prices, more sensitive to onboarding and trust.",ev:[],lnk:"#mk",l:"See the market series"}
+};
+function showKpi(k){
+ var d=KPI[k],el=$("kpidetail");
+ document.querySelectorAll(".kpi").forEach(function(c){c.className="kpi"+(c.getAttribute("data-kd")==k&&el.getAttribute("data-open")==k&&el.className.indexOf("hide")<0?" sel":"")});
+ if(el.getAttribute("data-open")==k&&el.className.indexOf("hide")<0){el.className="card hide";el.setAttribute("data-open","");return}
+ el.setAttribute("data-open",k);el.className="card";
+ el.innerHTML="<h3>"+esc(d.t)+"</h3><p>"+esc(d.b)+"</p>"+(d.ev.length?"<ul class='evlist'>"+d.ev.map(function(m){return "<li><span class='d'>"+m+"</span>"+((ACTM[m]||[]).map(esc).join(" · "))+"</li>"}).join("")+"</ul>":"")+"<p style='margin-top:10px'><a href='#' id='kpigo'>"+esc(d.l)+" →</a></p>";
+ var go=el.querySelector("#kpigo");if(go)go.onclick=function(e){e.preventDefault();document.querySelector('.tabs button[data-t="mk"]').click();var c=$("mchart");if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.style.transition="box-shadow .4s";c.style.boxShadow="0 0 0 3px var(--ac)";setTimeout(function(){c.style.boxShadow=""},1200)}};
+}
+document.querySelectorAll(".kpi").forEach(function(c){
+ c.onclick=function(){showKpi(c.getAttribute("data-kd"))};
+ c.onkeydown=function(e){if(e.key=="Enter"||e.key==" "){e.preventDefault();showKpi(c.getAttribute("data-kd"))}};
+});
+
+/* ---- interactive setup / guide ---- */
+var STEPS=[
+ {t:"What is this?",o:null,h:"<p class='note'>A tracker for digital-asset regulation in Indonesia (Bappebti → OJK), built entirely on real, sourced data: monthly crypto transaction values Jan 2023 – Sep 2026, a dated regulatory timeline, and event-study estimates with their placebo tests. Take the 30-second tour, or jump straight to what you need.</p>"},
+ {t:"What brings you here?",o:[
+  {i:"mk",b:"See the market data",d:"Monthly transaction values through the Bappebti era, the OJK takeover, and the OJK era."},
+  {i:"es",b:"Understand the 10 Jan 2025 event",d:"What changed at the takeover — and what the data can and cannot say about it."},
+  {i:"tl",b:"Explore what regulators did",d:"A filterable timeline of every dated OJK, Bappebti and MoF action."},
+  {i:"ax",b:"See the ASEAN context",d:"How Thailand, Malaysia, Vietnam, the Philippines and regional initiatives compare."},
+  {i:"me",b:"Know the caveats first",d:"Revisions, imputed months, and the limits of this design — read before quoting anything."}]},
+ {t:"How to read the charts",o:null,h:"<p class='note'><b>Solid points</b> are figures as reported by the regulator (via press). <b>Hollow points with dashed segments</b> are imputed — residuals of reported cumulative totals, split evenly, flagged everywhere they appear. Dashed vertical lines mark the three key events: the takeover (Jan 2025), the tax change (Aug 2025), and the ICEx launch (Mar 2026). Hover any point for its value.</p>"},
+ {t:"One rule before you quote anything",o:null,h:"<p class='note'>Every estimate on the Event study tab carries its placebo test. Where fake event dates produce similar results, the design does not identify an effect — and the dashboard says so. Figures are secondhand (press coverage of regulator statements) and revised over time; replace them with OJK's own statistics before any formal write-up.</p>"}
+];
+var step=0;
+function gotoTab(id){document.querySelector('.tabs button[data-t="'+id+'"]').click();window.scrollTo({top:0,behavior:"smooth"})}
+function drawWiz(){
+ var s=STEPS[step],h="<h2>"+esc(s.t)+"</h2><div class='steps'>Step "+(step+1)+" of "+STEPS.length+"</div>";
+ if(s.o){h+="<div class='opts'>"+s.o.map(function(o){return "<button class='opt' data-go='"+o.i+"'><b>"+esc(o.b)+"</b><span>"+esc(o.d)+"</span></button>"}).join("")+"</div>"}
+ else h+=s.h;
+ h+="<div class='nav'><button id='wskip'>Skip</button>"+(step<STEPS.length-1?"<button class='pri' id='wnext'>Next</button>":"<button class='pri' id='wdone'>Start exploring</button>")+"</div>";
+ $("wizbox").innerHTML=h;
+ $("wizbox").querySelectorAll(".opt").forEach(function(b){b.onclick=function(){$("wizovl").className="ovl hide";gotoTab(b.dataset.go)}});
+ var sk=$("wskip");if(sk)sk.onclick=closeWiz;
+ var nx=$("wnext");if(nx)nx.onclick=function(){step++;drawWiz()};
+ var dn=$("wdone");if(dn)dn.onclick=closeWiz;
+}
+function closeWiz(){ $("wizovl").className="ovl hide"; try{localStorage.setItem("regtrack_seen","1")}catch(e){} }
+$("guidebtn").onclick=function(){step=0;drawWiz();$("wizovl").className="ovl"};
+var seen=null;try{seen=localStorage.getItem("regtrack_seen")}catch(e){}
+if(!seen){step=0;drawWiz()}
+/* honor inbound hash links from the landing page (e.g. #mk, #es, #tl, #ax) */
+(function(){var h=location.hash&&location.hash.slice(1);if(h&&document.querySelector('.tabs button[data-t="'+h+'"]')){try{localStorage.setItem("regtrack_seen","1")}catch(e){}$("wizovl").className="ovl hide";document.querySelector('.tabs button[data-t="'+h+'"]').click()}})();
+</script></main></body></html>

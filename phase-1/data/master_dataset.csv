@@ -1,0 +1,46 @@
+month,value_idr_trillion,imputed,regulator_era,mom_log_growth_pct,events_that_month,source_derivation
+2023-01,12.13,1,Bappebti,,P2SK Law 4/2023 passed (legal basis for transfer),"derived from Jan-Feb 2023 combined (Rp25.94T, Bappebti SE 47/2024 ratio)"
+2023-02,13.81,1,Bappebti,13.0%,,"derived from Jan-Feb 2023 combined (Rp25.94T, Bappebti SE 47/2024 ratio)"
+2023-03,12.54,0,Bappebti,-9.6%,,https://emitennews.com/news/investor-kripto-indonesia-capai-1725-juta-per-april-2023-bappebti-terus-optimistis (April release: Mar Rp12.54T)
+2023-04,10.77,0,Bappebti,-15.2%,,"https://emitennews.com/news/investor-kripto-indonesia-capai-1725-juta-per-april-2023-bappebti-terus-optimistis (Apr Rp10.77T, -14.15% MoM)"
+2023-05,9.30,1,Bappebti,-14.7%,,"derived: residual of Jan-Sep 2023 cumulative (Rp94.41T, Bappebti via detik/Pojok Media)"
+2023-06,9.30,1,Bappebti,0.0%,,"derived: residual of Jan-Sep 2023 cumulative (Rp94.41T, Bappebti via detik/Pojok Media)"
+2023-07,9.30,1,Bappebti,0.0%,CFX national crypto exchange launched,"derived: residual of Jan-Sep 2023 cumulative (Rp94.41T, Bappebti via detik/Pojok Media)"
+2023-08,9.30,1,Bappebti,0.0%,MAS stablecoin framework finalised (SG),"derived: residual of Jan-Sep 2023 cumulative (Rp94.41T, Bappebti via detik/Pojok Media)"
+2023-09,7.96,0,Bappebti,-15.6%,,"https://www.liputan6.com/crypto/read/5435666/investor-kripto-di-indonesia-sentuh-1791-juta-hingga-september-2023 (Sep Rp7.96T, -31% MoM)"
+2023-10,10.50,1,Bappebti,27.7%,,"derived: residual of FY2023 total (Rp149.25T, Bappebti annual report)"
+2023-11,22.17,1,Bappebti,74.7%,,"derived: residual of FY2023 total (Rp149.25T, Bappebti annual report)"
+2023-12,22.17,1,Bappebti,0.0%,,"derived: residual of FY2023 total (Rp149.25T, Bappebti annual report)"
+2024-01,21.57,0,Bappebti,-2.7%,,"derived: residual of Jan-Feb 2024 (Rp55.26T, https://news.ddtc.co.id/berita/nasional/1801470/transaksi-kripto-januari-februari-2024-naik-dua-kali-lipat)"
+2024-02,33.69,0,Bappebti,44.6%,,"DDTC News / Bappebti (Feb Rp33.69T, +56.22% MoM) https://news.ddtc.co.id/berita/nasional/1801470/transaksi-kripto-januari-februari-2024-naik-dua-kali-lipat"
+2024-03,102.74,0,Bappebti,111.5%,,"derived: residual of Q1 2024 (Rp158T, Bappebti via Komdigi)"
+2024-04,52.26,0,Bappebti,-67.6%,PS Act custody amendments in force (SG),"Bappebti via Kemendag coverage (Apr Rp52.26T, -49.5% MoM), reported 27 May 2024"
+2024-05,49.82,0,Bappebti,-4.8%,,"Bappebti via Kemendag coverage (May Rp49.82T), reported 1 Jul 2024"
+2024-06,41.67,0,Bappebti,-17.9%,,"derived: residual of H1 2024 (Rp301.75T, https://www.liputan6.com/crypto/read/5654766/tumbuh-354-nilai-transaksi-kripto-indonesia-capai-rp-301-triliun-per-juni-2024)"
+2024-07,42.34,0,Bappebti,1.6%,,"derived: residual of Jan-Jul 2024 (Rp344.09T, Bappebti)"
+2024-08,48.92,0,Bappebti,14.4%,Thai SEC digital-asset sandbox,Bappebti via investing.com Pojok Media clipping (Aug Rp48.92T) https://bappebti.go.id/resources/docs/pojok_media_2024_10_03_pr8y7696.pdf
+2024-09,33.67,0,Bappebti,-37.4%,,"Bappebti (Sep Rp33.67T, -31% MoM), reported Oct 2024"
+2024-10,48.44,0,Bappebti,36.4%,BIS Project Mandala phase 1 demonstrated,"derived: residual of Jan-Oct 2024 (Rp475.13T, https://bappebti.go.id/resources/docs/siaran_pers_2024_11_21_4jnshaph_id.pdf)"
+2024-11,81.40,0,Bappebti,51.9%,,"derived: residual of Jan-Nov 2024 (Rp556.53T, https://bappebti.go.id/resources/docs/siaran_pers_2024_12_27_zxj81wto_id.pdf)"
+2024-12,94.08,0,Bappebti,14.5%,POJK 27/2024 issued,"derived: residual of FY2024 (Rp650.61T, https://www.tempo.co/ekonomi/perdagangan-aset-kripto-di-bappebti-capai-rp-650-61-triliun-di-tahun-2024-1198410)"
+2025-01,44.07,0,OJK,-75.8%,OJK takeover from Bappebti (10 Jan),https://investortrust.id/market/58602/transaksi-aset-kripto-tembus-rp-44-triliun-melesat-104-di-januari-2025
+2025-02,32.62,1,OJK,-30.1%,,"derived: Feb+Mar 2025 combined Rp65.23T from OJK cumulative reporting, split evenly"
+2025-03,32.62,1,OJK,0.0%,,"derived: Feb+Mar 2025 combined Rp65.23T from OJK cumulative reporting, split evenly"
+2025-04,35.61,0,OJK,8.8%,,https://wartaekonomi.co.id/read575600/makin-diminati-jumlah-konsumen-aset-kripto-capai-rekor-baru
+2025-05,49.57,0,OJK,33.1%,,https://wartaekonomi.co.id/read575600/makin-diminati-jumlah-konsumen-aset-kripto-capai-rekor-baru
+2025-06,32.31,0,OJK,-42.8%,Vietnam Digital Technology Industry Law passed,https://bcasekuritas.co.id/en/latest-news/news/ojk-catat-transaksi-aset-kripto-capai-rp3231-triliun-pada-juni-2025
+2025-07,52.46,0,OJK,48.5%,DFA trading operations formally start (10 Jul),https://finance.detik.com/fintech/d-8095917/nilai-transaksi-kripto-ri-melesat-tembus-rp-276-45-t/amp
+2025-08,45.21,0,OJK,-14.9%,PMK 50/2025 tax change (1 Aug); TouristDigiPay announced (TH); domestic unrest (Aug-Sep),https://market.bisnis.com/read/20251009/94/1918938/ojk-transaksi-aset-kripto-turun-jadi-rp3864-triliun-pada-september-2025
+2025-09,38.64,0,OJK,-15.7%,Thailand 5-year capital-gains tax exemption,https://market.bisnis.com/read/20251009/94/1918938/ojk-transaksi-aset-kripto-turun-jadi-rp3864-triliun-pada-september-2025
+2025-10,49.29,0,OJK,24.3%,,https://ekonomi.republika.co.id/berita/t75b5a370/transaksi-aset-kripto-november-2025-capai-rp-3720-triliun
+2025-11,37.23,0,OJK,-28.1%,OJK draft follow-up DFA regulation,"https://infobanknews.com/ojk-catat-transaksi-aset-kripto-2025-tembus-rp482-triliun/ (first reported 37.20, revised 37.23)"
+2025-12,32.68,0,OJK,-13.0%,POJK 23/2025 (DFA derivatives),https://infobanknews.com/ojk-catat-transaksi-aset-kripto-2025-tembus-rp482-triliun/
+2026-01,29.24,0,OJK,-11.1%,Vietnam law in force; crypto-asset market pilot,"OJK RDKB Feb 2026 press release (Jan Rp29.24T, -10.53% MoM)"
+2026-02,24.33,0,OJK,-18.4%,SC Malaysia clarifies broking requirements,"OJK RDKB Mar 2026 press release (Feb Rp24.33T, -16.89% MoM) https://ojk.go.id/id/berita-dan-kegiatan/siaran-pers/Documents/Pages/RDKB-Maret-2026/"
+2026-03,22.82,1,OJK,-6.4%,"ICEx Group launch (18 Mar): exchange, clearing (CACI), custody (ICC)","derived: Mar-May 2026 combined ~Rp68.45T (Jan-Jul 2026 cumulative Rp171.12T minus known months), split evenly"
+2026-04,22.82,1,OJK,0.0%,,"derived: Mar-May 2026 combined ~Rp68.45T (Jan-Jul 2026 cumulative Rp171.12T minus known months), split evenly"
+2026-05,22.82,1,OJK,0.0%,,"derived: Mar-May 2026 combined ~Rp68.45T (Jan-Jul 2026 cumulative Rp171.12T minus known months), split evenly"
+2026-06,28.58,0,OJK,22.5%,MAS draft stablecoin legislation published,"OJK (Jun Rp28.58T, +24.1% MoM), reported 4 Aug 2026"
+2026-07,20.52,0,OJK,-33.1%,Indonesia international financial centre bill passed,"OJK (Jul Rp20.52T, -28.2% MoM)"
+2026-08,23.16,0,OJK,12.1%,,"OJK (Aug Rp23.16T, +12.87% MoM) via OJK Crypto Literacy Month 2026 release"
+2026-09,30.56,0,OJK,27.7%,PADK 3/2026 implementing guidelines,"OJK (Sep Rp30.56T), Jan-Sep 2026 cumulative Rp224.84T"

@@ -1,0 +1,11 @@
+month,value_thb_million,type,source_note
+2024-01,,RECOVERY TARGET,"Thai SEC monthly digital asset market report - not yet recovered"
+2024-02,,RECOVERY TARGET,"Thai SEC monthly report"
+2024-03,,RECOVERY TARGET,"Thai SEC monthly report"
+2024-04,37000,ANCHOR,"~THB 37B monthly trading value, reported Apr 2024 (Krungsri Research / SEC data)"
+2024-08,,RECOVERY TARGET,"Thai SEC monthly report"
+2025-08,100000,ANCHOR,"THB 100B trading value, SEC data via The Nation Thailand, Sep 2025"
+2025-12,,RECOVERY TARGET,"Dec 2025: client assets fell 7.29%, daily trading -30% (SEC via The Nation)"
+2026-07,,RECOVERY TARGET,"Jul 2026 cooling reported (SEC monthly)"
+2025-AVG,72300,DERIVED ANCHOR,"2025 average daily THB 2,410M x 30 days ~ THB 72.3B/month (SEC via Krungsri Research)"
+2024-AVG,53760,DERIVED ANCHOR,"2024 average daily THB 1,792M x 30 days ~ THB 53.8B/month"

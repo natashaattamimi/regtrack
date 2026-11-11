@@ -1,0 +1,7 @@
+specification,term,coef,se,p
+main,const,3.568,0.111,0.000
+main,t,0.033,0.028,0.244
+main,post,0.499,0.207,0.016
+main,t_post,-0.084,0.032,0.009
+robustness,no imputed months,+41.5% shift,,0.029
+placebo,fake dates Mar–Jul 2025,+8.5% to +66.8% shifts,similar to real date,0.002–0.505

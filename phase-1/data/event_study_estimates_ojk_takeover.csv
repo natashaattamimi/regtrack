@@ -1,0 +1,8 @@
+specification,quantity,estimate,detail,p_value
+level-shift ITS (misspecified),post shift,+1163%,placebo dates give +230% to +1750%; invalid,<0.001
+growth break (main),pre mean growth,+9.3%/month,"Δlog series, HAC lag 3",—
+growth break (main),shift at Jan 2025,−14.3 pp/month,implied post growth −5.2%/month,0.117
+growth break (main),post mean growth,−5.2%/month,21 post months,—
+robustness,drop imputed months,−11.8 pp/month,n = 31,0.282
+placebo,2023-07..2024-10,−20.4 to +8.9 pp,"six fake event dates, none significant",0.12–0.63
+placebo (level ITS),2024-01..2024-10,+619% to +1753%,why the level spec fails,<0.01

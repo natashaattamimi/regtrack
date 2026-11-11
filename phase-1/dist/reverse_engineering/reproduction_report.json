@@ -1,0 +1,298 @@
+{
+  "schemas": [
+    {
+      "file": "annual_transaction_totals.csv",
+      "ok": true,
+      "rows": 5,
+      "detail": "ok"
+    },
+    {
+      "file": "indonesian_crypto_transactions_monthly.csv",
+      "ok": true,
+      "rows": 45,
+      "detail": "ok"
+    },
+    {
+      "file": "master_dataset.csv",
+      "ok": true,
+      "rows": 45,
+      "detail": "ok"
+    },
+    {
+      "file": "regulatory_intensity_monthly.csv",
+      "ok": true,
+      "rows": 45,
+      "detail": "ok"
+    },
+    {
+      "file": "regulatory_milestones_indonesia_singapore.csv",
+      "ok": true,
+      "rows": 18,
+      "detail": "ok"
+    },
+    {
+      "file": "regulatory_milestones_asean_regional.csv",
+      "ok": true,
+      "rows": 14,
+      "detail": "ok"
+    },
+    {
+      "file": "event_study_estimates_ojk_takeover.csv",
+      "ok": true,
+      "rows": 7,
+      "detail": "ok"
+    },
+    {
+      "file": "event_study_estimates_aug_2025_tax_change.csv",
+      "ok": true,
+      "rows": 6,
+      "detail": "ok"
+    },
+    {
+      "file": "bappebti_cumulative_anchors_2022_2024.csv",
+      "ok": true,
+      "rows": 10,
+      "detail": "ok"
+    },
+    {
+      "file": "thailand_sec_monthly_seeds.csv",
+      "ok": true,
+      "rows": 10,
+      "detail": "ok"
+    }
+  ],
+  "embedded": {
+    "months_html": 45,
+    "months_csv": 45,
+    "first": "2023-01",
+    "last": "2026-09",
+    "mismatches": [],
+    "imputed_months": 14
+  },
+  "annual": [
+    {
+      "year": "2023",
+      "months": 12,
+      "monthly_sum": 149.25,
+      "reported": 149.25,
+      "diff": 0.0
+    },
+    {
+      "year": "2024",
+      "months": 12,
+      "monthly_sum": 650.6,
+      "reported": 650.61,
+      "diff": -0.01
+    },
+    {
+      "year": "2025",
+      "months": 12,
+      "monthly_sum": 482.31,
+      "reported": 482.23,
+      "diff": 0.08
+    },
+    {
+      "year": "2026",
+      "months": 9,
+      "monthly_sum": 224.85,
+      "reported": null,
+      "diff": null
+    }
+  ],
+  "growth_break": {
+    "shift_pp": -14.26,
+    "se": 9.11,
+    "t": -1.566,
+    "p": 0.117,
+    "n_pre": 23,
+    "n_post": 21,
+    "pre_mean_growth": 8.91,
+    "post_mean_growth": -5.35
+  },
+  "sensitivity": [
+    {
+      "check": "linear trend added",
+      "shift_pp": -36.67,
+      "se": 20.16,
+      "p": 0.069,
+      "n_pre": 23,
+      "n_post": 21
+    },
+    {
+      "check": "imputed months dropped",
+      "shift_pp": -21.42,
+      "se": 13.36,
+      "p": 0.109,
+      "n_pre": 14,
+      "n_post": 16
+    }
+  ],
+  "placebo": [
+    {
+      "fake_month": "2023-08",
+      "shift_pp": 7.56,
+      "p": 0.181
+    },
+    {
+      "fake_month": "2023-09",
+      "shift_pp": 7.01,
+      "p": 0.213
+    },
+    {
+      "fake_month": "2023-10",
+      "shift_pp": 9.0,
+      "p": 0.122
+    },
+    {
+      "fake_month": "2023-11",
+      "shift_pp": 4.66,
+      "p": 0.413
+    },
+    {
+      "fake_month": "2023-12",
+      "shift_pp": -5.09,
+      "p": 0.622
+    },
+    {
+      "fake_month": "2024-01",
+      "shift_pp": -4.51,
+      "p": 0.631
+    },
+    {
+      "fake_month": "2024-02",
+      "shift_pp": -3.71,
+      "p": 0.674
+    },
+    {
+      "fake_month": "2024-03",
+      "shift_pp": -8.17,
+      "p": 0.333
+    },
+    {
+      "fake_month": "2024-04",
+      "shift_pp": -19.3,
+      "p": 0.136
+    },
+    {
+      "fake_month": "2024-05",
+      "shift_pp": -11.59,
+      "p": 0.208
+    },
+    {
+      "fake_month": "2024-06",
+      "shift_pp": -10.58,
+      "p": 0.231
+    },
+    {
+      "fake_month": "2024-07",
+      "shift_pp": -8.41,
+      "p": 0.348
+    },
+    {
+      "fake_month": "2024-08",
+      "shift_pp": -8.2,
+      "p": 0.347
+    },
+    {
+      "fake_month": "2024-09",
+      "shift_pp": -9.22,
+      "p": 0.266
+    },
+    {
+      "fake_month": "2024-10",
+      "shift_pp": -5.51,
+      "p": 0.555
+    },
+    {
+      "fake_month": "2024-11",
+      "shift_pp": -8.6,
+      "p": 0.294
+    },
+    {
+      "fake_month": "2024-12",
+      "shift_pp": -13.11,
+      "p": 0.13
+    },
+    {
+      "fake_month": "2025-02",
+      "shift_pp": -7.21,
+      "p": 0.313
+    },
+    {
+      "fake_month": "2025-03",
+      "shift_pp": -4.3,
+      "p": 0.59
+    },
+    {
+      "fake_month": "2025-04",
+      "shift_pp": -4.17,
+      "p": 0.599
+    },
+    {
+      "fake_month": "2025-05",
+      "shift_pp": -4.89,
+      "p": 0.52
+    },
+    {
+      "fake_month": "2025-06",
+      "shift_pp": -8.05,
+      "p": 0.275
+    },
+    {
+      "fake_month": "2025-07",
+      "shift_pp": -3.75,
+      "p": 0.628
+    },
+    {
+      "fake_month": "2025-08",
+      "shift_pp": -8.74,
+      "p": 0.211
+    },
+    {
+      "fake_month": "2025-09",
+      "shift_pp": -7.26,
+      "p": 0.293
+    },
+    {
+      "fake_month": "2025-10",
+      "shift_pp": -5.58,
+      "p": 0.433
+    },
+    {
+      "fake_month": "2025-11",
+      "shift_pp": -8.59,
+      "p": 0.259
+    },
+    {
+      "fake_month": "2025-12",
+      "shift_pp": -5.27,
+      "p": 0.445
+    },
+    {
+      "fake_month": "2026-01",
+      "shift_pp": -3.58,
+      "p": 0.596
+    },
+    {
+      "fake_month": "2026-02",
+      "shift_pp": -1.89,
+      "p": 0.774
+    },
+    {
+      "fake_month": "2026-03",
+      "shift_pp": 1.38,
+      "p": 0.824
+    },
+    {
+      "fake_month": "2026-04",
+      "shift_pp": 3.2,
+      "p": 0.626
+    }
+  ],
+  "published": {
+    "shift_pp": -14.3,
+    "p": 0.117,
+    "pre_growth": 9.3,
+    "post_growth": -5.2
+  }
+}

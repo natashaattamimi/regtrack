@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dataset catalog — Regulatory Tracker</title>
+<style>
+:root{--bg:#f7f5ef;--card:#fffdf8;--ink:#1d1d1b;--mu:#6b6a65;--ln:#ddd8cb;--moss:#0f6e56;--clay:#b4531a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#141412;--card:#1d1d1a;--ink:#eceadf;--mu:#9d9b90;--ln:#34322b;--moss:#4fc3a1;--clay:#e9a070;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Georgia,serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 22px 60px}
+header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;padding:26px 0}
+.mark{font:600 17px system-ui,sans-serif}.mark em{font-style:normal;color:var(--moss)}
+.tabs{display:flex;gap:8px;margin:6px 0 0}
+.tabs button{border:1px solid var(--ln);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 18px;font:600 13.5px system-ui,sans-serif;cursor:pointer}
+.tabs button.on{background:var(--moss);border-color:var(--moss);color:#fff}
+h1{font-size:clamp(24px,4vw,34px);font-weight:400;margin:26px 0 6px}
+.sub{font:13.5px/1.5 system-ui,sans-serif;color:var(--mu);max-width:70ch}
+.searchbox{width:100%;padding:11px 14px;margin:20px 0 12px;border:1px solid var(--ln);border-radius:10px;background:var(--card);color:var(--ink);font:15px system-ui,sans-serif}
+.searchbox:focus{outline:2px solid var(--moss);outline-offset:1px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.chip{border:1px solid var(--ln);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 14px;font:600 12.5px system-ui,sans-serif;cursor:pointer}
+.chip.on{background:var(--moss);border-color:var(--moss);color:#fff}
+.chip.saved{border-color:var(--moss)}
+.chip.saved .x{color:var(--clay);margin-left:6px;font-weight:700}
+.count{font:12.5px system-ui,sans-serif;color:var(--mu);margin:0 0 8px}
+.ds{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:16px 18px;margin:0 0 12px}
+.ds .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.ds h3{margin:0;font:600 16px system-ui,sans-serif}
+.ds .tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font:600 10.5px system-ui,sans-serif;padding:2px 9px;border-radius:99px;color:#fff;background:var(--moss)}
+.tag.ev{background:var(--clay)}.tag.est{background:#5a6b73}.tag.reg{background:#8a6d1f}
+.ds p{margin:8px 0 10px;font:13.5px/1.55 system-ui,sans-serif;color:var(--mu)}
+.ds .meta{font:12px system-ui,sans-serif;color:var(--mu);margin:0 0 12px}
+.ds a.dl{font:600 13px system-ui,sans-serif;margin-right:16px}
+.qbar{display:flex;gap:8px;margin:20px 0 10px}
+.qbar input{flex:1;padding:11px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--card);color:var(--ink);font:14px system-ui,sans-serif}
+.qbar input:focus{outline:2px solid var(--moss);outline-offset:1px}
+.qbar button{border:none;background:var(--moss);color:#fff;border-radius:10px;padding:0 20px;font:600 14px system-ui,sans-serif;cursor:pointer}
+.qbar button.ghost{background:var(--card);color:var(--ink);border:1px solid var(--ln)}
+.hint{font:12px/1.6 system-ui,sans-serif;color:var(--mu);margin:0 0 16px}
+.hint code{background:var(--card);border:1px solid var(--ln);border-radius:4px;padding:1px 6px}
+table.res{border-collapse:collapse;width:100%;font:13px system-ui,sans-serif}
+table.res th,table.res td{border-bottom:1px solid var(--ln);padding:7px 9px;text-align:left;vertical-align:top}
+table.res th{color:var(--mu);font-size:11.5px;text-transform:none}
+table.res td .t{color:var(--mu)}
+footer{margin-top:30px;font:12.5px/1.6 system-ui,sans-serif;color:var(--mu);border-top:1px solid var(--ln);padding-top:16px}
+.empty{padding:30px 0;font:14px system-ui,sans-serif;color:var(--mu)}
+@media(max-width:640px){table.res td:nth-child(2){display:none}table.res th:nth-child(2){display:none}}
+.qsel{padding:8px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--card);color:var(--ink);font:600 13.5px system-ui,sans-serif;min-width:200px}
+.qsel:focus{outline:2px solid var(--moss);outline-offset:1px}
+svg{width:100%;height:auto;display:block;max-height:340px}
+svg text{fill:var(--mu);font:11px system-ui,sans-serif}
+</style></head><body><div class="wrap">
+<header>
+<div class="mark">Regulatory <em>Tracker</em></div>
+<div style="font:13px system-ui,sans-serif"><a href="index.html">← landing</a> &nbsp; <a href="dashboard.html">dashboard</a></div>
+</header>
+<div class="tabs">
+<button class="on" data-v="cat">Datasets</button>
+<button data-v="qry">Query records</button>
+<button data-v="ana">Analyse</button>
+</div>
+
+<!-- ============ CATALOG TAB ============ -->
+<section id="cat">
+<h1>Every dataset, ready to search</h1>
+<p class="sub">The tracker's full data layer, itemised. Filter by type or jurisdiction, search by keyword, download any table as CSV. Each row is the same data the charts read — nothing hidden, nothing simulated.</p>
+<input class="searchbox" id="q" type="search" placeholder="Search datasets — try &quot;tax&quot;, &quot;MAS&quot;, &quot;monthly&quot;…" aria-label="Search datasets">
+<div class="chips" id="typechips"></div>
+<div class="chips" id="jurchips"></div>
+<p class="count" id="count"></p>
+<div id="list"></div>
+</section>
+
+<!-- ============ QUERY TAB ============ -->
+<section id="qry" style="display:none">
+<h1>Ask the records anything</h1>
+<p class="sub">One searchable table of every record compiled from the retrieved data — 105 rows across seven datasets. Write your own queries, save the ones you reuse, and they become buttons below the bar.</p>
+<div class="qbar">
+<input id="qq" type="search" placeholder='e.g.  country:Indonesia year:2025 "tax change"   ·   kind:events stablecoin   ·   or just type: tax' aria-label="Query records">
+<button id="qgo">Search</button>
+<button class="ghost" id="qsave" title="Save this query as a chip">Save</button>
+</div>
+<p class="hint">Plain words work — "tax", "stablecoin", "unrest". Optional filters: <code>country:</code> · <code>kind:</code> · <code>year:</code> · <code>dataset:</code> · <code>"exact phrase"</code>.</p>
+<div class="chips" id="savedchips"></div>
+<p class="count" id="rcount"></p>
+<div id="rresults"></div>
+</section>
+
+<!-- ============ ANALYSE TAB ============ -->
+<section id="ana" style="display:none">
+<h1>Match any variable to any variable</h1>
+<p class="sub">Pick a question; the page fits the relationship on the monthly panel (n = 45, Jan 2023 – Sep 2026) and tells you what it can and cannot claim. Everything runs in your browser on the same compiled data — no server, nothing hidden.</p>
+<div class="chips" id="presetrow"></div>
+<div class="chips"><button class="chip" id="advtoggle">Advanced: pick your own variables</button></div>
+<div id="advcontrols" class="hide">
+<div class="chips" style="align-items:center">
+<label class="hint" style="margin:0;font-weight:700">Outcome A</label>
+<select id="varA" class="qsel"></select>
+<label class="hint" style="margin:0;font-weight:700">Explanatory B</label>
+<select id="varB" class="qsel"></select>
+</div>
+</div>
+<div id="anachart"></div>
+<div id="anastats"></div>
+<div id="anaread"></div>
+</section>
+
+<footer>Compiled 9 Nov 2026. Sources are regulator statements reported through press coverage unless marked otherwise; known revisions are carried in the notes. CSV downloads include derivation flags where one exists. Saved queries persist in this browser.</footer>
+</div>
+<script>
+/* ---------- compiled data ---------- */
+var M=[["2023-01",12.13,1],["2023-02",13.81,1],["2023-03",12.54,0],["2023-04",10.77,0],["2023-05",9.30,1],["2023-06",9.30,1],["2023-07",9.30,1],["2023-08",9.30,1],["2023-09",7.96,0],["2023-10",10.50,1],["2023-11",22.17,1],["2023-12",22.17,1],["2024-01",21.57,0],["2024-02",33.69,0],["2024-03",102.74,0],["2024-04",52.26,0],["2024-05",49.82,0],["2024-06",41.67,0],["2024-07",42.34,0],["2024-08",48.92,0],["2024-09",33.67,0],["2024-10",48.44,0],["2024-11",81.40,0],["2024-12",94.08,0],["2025-01",44.07,0],["2025-02",32.62,1],["2025-03",32.62,1],["2025-04",35.61,0],["2025-05",49.57,0],["2025-06",32.31,0],["2025-07",52.46,0],["2025-08",45.21,0],["2025-09",38.64,0],["2025-10",49.29,0],["2025-11",37.23,0],["2025-12",32.68,0],["2026-01",29.24,0],["2026-02",24.33,0],["2026-03",22.82,1],["2026-04",22.82,1],["2026-05",22.82,1],["2026-06",28.58,0],["2026-07",20.52,0],["2026-08",23.16,0],["2026-09",30.56,0]];
+var EV=[{d:"2022-08",j:"id",t:"Taxation",b:"PMK 68/2022",p:"0.1% final income tax plus 11% VAT on domestic crypto sales."},{d:"2023-01",j:"id",t:"Market structure",b:"P2SK Law (Law 4/2023)",p:"Legal basis for moving crypto oversight from Bappebti to OJK within two years."},{d:"2023-07",j:"id",t:"Licensing",b:"CFX national crypto exchange launched",p:"State-backed exchange and clearing house under Bappebti-era rules."},{d:"2024-12",j:"id",t:"Licensing",b:"POJK 27/2024 issued",p:"OJK framework for digital financial asset trading including crypto."},{d:"2025-01",j:"id",t:"Market structure",b:"Oversight transfers Bappebti → OJK (10 Jan)",p:"Crypto reclassified from commodity to financial-sector activity."},{d:"2025-07",j:"id",t:"Licensing",b:"DFA trading operations formally start (10 Jul)",p:"Operational start under the new OJK framework."},{d:"2025-08",j:"id",t:"Taxation",b:"PMK 50/2025 effective (1 Aug)",p:"Sales tax 0.1%→0.21%; VAT removed; 1% for foreign exchanges."},{d:"2025-08",j:"id",t:"Context",b:"Domestic unrest (Aug–Sep)",p:"Nationwide protests; OJK commented on market impact."},{d:"2025-11",j:"id",t:"Custody",b:"OJK draft follow-up DFA regulation",p:"Draft rule on DFA activities; custody and operational requirements."},{d:"2025-12",j:"id",t:"Market structure",b:"POJK 23/2025",p:"Extends the framework to DFA derivatives."},{d:"2026-03",j:"id",t:"Market structure",b:"ICEx Group launch (18 Mar)",p:"ICEx exchange, CACI clearing, ICC custody; US$70M raised; competes with CFX."},{d:"2026-09",j:"id",t:"Licensing",b:"PADK 3/2026",p:"Implementing guidelines for the amended DFA trading rules."},{d:"2020-01",j:"sg",t:"Licensing",b:"Payment Services Act in force",p:"DPT service licensing framework begins."},{d:"2022-10",j:"sg",t:"Licensing",b:"Financial Services and Markets Act 2022",p:"Unified markets framework; local-presence requirement (in force Apr 2023)."},{d:"2022-05",j:"sg",t:"Tokenization",b:"Project Guardian pilots begin",p:"MAS-industry asset-tokenization pilots, 2022–2025."},{d:"2023-08",j:"sg",t:"Stablecoin",b:"Stablecoin framework finalised (15 Aug)",p:"Reserve, redemption, disclosure and intermediation rules for SCS."},{d:"2024-04",j:"sg",t:"Custody",b:"PS Act amendments in force",p:"Digital-asset custody brought into the licensed perimeter."},{d:"2026-06",j:"sg",t:"Stablecoin",b:"Draft stablecoin legislation published",p:"Consultation closed 16 Oct 2026."}];
+var AXEV=[{d:"2018-05",j:"th",b:"Royal Decree on Digital Asset Businesses",p:"SEC licensing framework: exchanges, brokers, dealers."},{d:"2024-08",j:"th",b:"Digital asset regulatory sandbox launched",p:"Broad SEC sandbox covering digital-asset services."},{d:"2025-09",j:"th",b:"Five-year capital-gains tax exemption",p:"0% CGT on licensed-platform trades through 2029, retroactive to 1 Jan 2025."},{d:"2025-08",j:"th",b:"TouristDigiPay sandbox announced (18 Aug)",p:"Crypto-to-baht conversion via PromptPay QR; ~18-month sandbox."},{d:"2019-01",j:"my",b:"Prescription Order: digital assets as securities",p:"Digital currency and tokens under the Securities Commission."},{d:"2024-08",j:"my",b:"Recognized Markets guidelines revised for DAX",p:"RMO updates; 2025 licensed-DAX volume RM17.14B (+23%)."},{d:"2026-02",j:"my",b:"Digital asset broking requirements clarified",p:"CMSL holders must notify the SC before broking services."},{d:"2017-04",j:"vn",b:"Decree 52 / Circular 10: payments in crypto banned",p:"Grey-market status: ownership tolerated, payments prohibited."},{d:"2025-06",j:"vn",b:"Law on Digital Technology Industry passed",p:"First statutory recognition of digital assets (71/2025/QH15)."},{d:"2026-01",j:"vn",b:"Law takes force; crypto-asset market pilot begins",p:"Prospectus 15 days before offering; foreign-investor restrictions."},{d:"2021-01",j:"ph",b:"BSP Circular 1108: VASP licensing guidelines",p:"Licensing of crypto-to-fiat providers under AMLC registration."},{d:"2022-09",j:"ph",b:"Three-year moratorium on new VASP licences",p:"BSP stops new applications 1 Sep 2022, expiring ~Sep 2025."},{d:"2024-10",j:"rg",b:"BIS Project Mandala phase 1 demonstrated",p:"Compliance-by-design cross-border payments; MAS and BNM partners."},{d:"2026-07",j:"rg",b:"Indonesia passes IFC bill: Jakarta then Bali",p:"International financial centres; digital assets among pillars."}];
+var JN={id:"Indonesia",sg:"Singapore",th:"Thailand",my:"Malaysia",vn:"Vietnam",ph:"Philippines",rg:"Regional"};
+/* ---------- dataset catalog ---------- */
+var DATA=[
+{t:"Indonesian crypto transactions, monthly",ty:"time series",ju:"Indonesia",per:"Jan 2023 – Sep 2026",n:45,
+ d:"Monthly transaction value in Rp trillion across the whole Bappebti-to-OJK record. 31 months as reported; 14 derived from reported cumulative figures (flagged). Reconciles against every published annual and cumulative total.",
+ cols:"month,value_idr_trillion,imputed,source_note",link:"#mk",
+ rows:function(){return M.map(function(r){return [r[0],r[1],r[2],r[2]?"derived from combined/cumulative report":"as reported"]})}},
+{t:"Regulatory milestones — Indonesia & Singapore",ty:"events",ju:"Indonesia, Singapore",per:"2020 – 2026",n:18,
+ d:"Dated, sourced actions: POJK 27/2024 and 23/2025, PMK 50/2025 tax change, the 10 Jan 2025 transfer, ICEx licences, P2SK Law, CFX, MAS's PS Act, stablecoin framework, custody amendments, Project Guardian.",
+ cols:"date,jurisdiction,theme,title,description",link:"#tl",
+ rows:function(){return EV.map(function(e){return [e.d,JN[e.j],e.t,e.b,e.p]})}},
+{t:"Regulatory milestones — ASEAN & regional",ty:"events",ju:"Thailand, Malaysia, Vietnam, Philippines, Regional",per:"2017 – 2026",n:14,
+ d:"The ASEAN context layer: Thailand's tax holiday and TouristDigiPay, Vietnam's digital-asset law, the Philippines' VASP moratorium, Malaysia's SC clarifications, BIS Project Mandala, Indonesia's IFC bill.",
+ cols:"date,jurisdiction,title,description",link:"#ax",
+ rows:function(){return AXEV.map(function(e){return [e.d,JN[e.j],e.b,e.p]})}},
+{t:"Event-study estimates — OJK takeover",ty:"estimates",ju:"Indonesia",per:"event 2025-01-10",n:7,
+ d:"Growth-rate break at the transfer with placebo and robustness rows. Naive level-shift ITS included with its result, kept deliberately as the documented failure.",
+ cols:"specification,quantity,estimate,detail,p_value",link:"#es",
+ rows:function(){return [["level-shift ITS (misspecified)","post shift","+1163%","placebo dates give +230% to +1750%; invalid","<0.001"],["growth break (main)","pre mean growth","+9.3%/month","Δlog series, HAC lag 3","—"],["growth break (main)","shift at Jan 2025","−14.3 pp/month","implied post growth −5.2%/month","0.117"],["growth break (main)","post mean growth","−5.2%/month","21 post months","—"],["robustness","drop imputed months","−11.8 pp/month","n = 31","0.282"],["placebo","2023-07..2024-10","−20.4 to +8.9 pp","six fake event dates, none significant","0.12–0.63"],["placebo (level ITS)","2024-01..2024-10","+619% to +1753%","why the level spec fails","<0.01"]]}},
+{t:"Event-study estimates — Aug 2025 tax change",ty:"estimates",ju:"Indonesia",per:"event 2025-08-01",n:6,
+ d:"ITS on OJK-era months for PMK 50/2025 (sales tax 0.1%→0.21%, VAT removed). Significant naively; placebo test fails, so reported as unidentified.",
+ cols:"specification,term,coef,se,p",link:"#es",
+ rows:function(){return [["main","const",3.568,0.111,"0.000"],["main","t",0.033,0.028,"0.244"],["main","post",0.499,0.207,"0.016"],["main","t_post",-0.084,0.032,"0.009"],["robustness","no imputed months","+41.5% shift","","0.029"],["placebo","fake dates Mar–Jul 2025","+8.5% to +66.8% shifts","similar to real date","0.002–0.505"]]}},
+{t:"Annual transaction totals",ty:"time series",ju:"Indonesia",per:"2021 – 2025",n:5,
+ d:"Full-year totals spanning the boom (Rp859.4T in 2021), the bear market, the 2024 recovery and OJK's first year. Note the FY2024 revision: 650.61 (Bappebti) vs 640.61 (later OJK citation).",
+ cols:"year,value_idr_trillion,regulator",link:"#mk",
+ rows:function(){return [["2021",859.4,"Bappebti"],["2022",306.4,"Bappebti"],["2023",149.25,"Bappebti"],["2024",650.61,"Bappebti (revised figure 640.61 cited by OJK)"],["2025",482.23,"OJK"]]}},
+{t:"Regulatory intensity, monthly",ty:"estimates",ju:"Indonesia, Singapore, ASEAN",per:"Jan 2023 – Sep 2026",n:45,
+ d:"The treatment layer as a series: each dated milestone weighted 3 (major structural), 2 (framework), or 1 (implementing/pilot); confounders like the Aug 2025 unrest excluded. Built for event windows with leads/lags against the outcome panel.",
+ cols:"month,intensity_id,intensity_sg,intensity_asean,id_events_weighted",link:"#tl",
+ rows:function(){return INT}},
+{t:"Bappebti cumulative anchors 2022–2024",ty:"audit trail",ju:"Indonesia",per:"2022 – 2024",n:10,
+ d:"The cumulative releases used to reconcile the reconstructed monthly series — the audit trail behind the 2023–2024 data points and the 2022 constraints.",
+ cols:"period,value_idr_trillion,yoy_note",link:"#mk",
+ rows:function(){return [["2022 Jan–Aug",249.3,"(Wantimpres citing Bappebti)"],["2022 FY",306.4,"−56.35% vs 2021"],["2023 FY",149.25,"−51.29% vs 2022"],["2024 Jan–Feb",55.26,"+113.05%"],["2024 Q1",158,""],["2024 H1",301.75,"+354.17%"],["2024 Jan–Jul",344.09,""],["2024 Jan–Sep",426.69,"+351.97%"],["2024 Jan–Oct",475.13,"+352.89%"],["2024 FY",650.61,""]]}}
+];
+var INT=[["2023-01",0,0,0,""],["2023-02",0,0,0,""],["2023-03",0,0,0,""],["2023-04",0,0,0,""],["2023-05",0,0,0,""],["2023-06",0,0,0,""],["2023-07",3,0,0,"CFX exchange launch"],["2023-08",0,2,0,""],["2023-09",0,0,0,""],["2023-10",0,0,0,""],["2023-11",0,0,0,""],["2023-12",0,0,0,""],["2024-01",0,0,0,""],["2024-02",0,0,0,""],["2024-03",0,0,0,""],["2024-04",0,2,0,""],["2024-05",0,0,0,""],["2024-06",0,0,0,""],["2024-07",0,0,0,""],["2024-08",0,0,2,""],["2024-09",0,0,0,""],["2024-10",0,0,1,""],["2024-11",0,0,0,""],["2024-12",3,0,0,""],["2025-01",3,0,0,"OJK transfer"],["2025-02",0,0,0,""],["2025-03",0,0,0,""],["2025-04",0,0,0,""],["2025-05",0,0,0,""],["2025-06",0,0,3,""],["2025-07",1,0,0,""],["2025-08",2,0,1,"PMK 50/2025 tax change"],["2025-09",0,0,2,""],["2025-10",0,0,0,""],["2025-11",2,0,0,""],["2025-12",2,0,0,""],["2026-01",0,0,2,""],["2026-02",0,0,1,""],["2026-03",3,0,0,""],["2026-04",0,0,0,""],["2026-05",0,0,0,""],["2026-06",0,2,3,""],["2026-07",0,0,3,""],["2026-08",0,0,0,""],["2026-09",1,0,0,""]];
+var TYPES=["all","time series","events","estimates","audit trail"],JURS=["all","Indonesia","Singapore","Thailand","Malaysia","Vietnam","Philippines","Regional"];
+var tSel="all",jSel="all",q="";
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function csv(rows){return rows.map(function(r){return r.map(function(c){c=String(c==null?"":c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(",")}).join("\r\n")}
+function download(name,rows){
+ var blob=new Blob(["﻿"+csv(rows)],{type:"text/csv"}),u=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},2000);
+}
+function matches(d){
+ if(tSel!="all"&&d.ty!=tSel)return false;
+ if(jSel!="all"&&d.ju.indexOf(jSel)<0)return false;
+ if(q){var hay=(d.t+" "+d.ty+" "+d.ju+" "+d.per+" "+d.d+" "+d.cols).toLowerCase();if(hay.indexOf(q)<0)return false}
+ return true;
+}
+function render(){
+ var list=DATA.filter(matches);
+ document.getElementById("count").textContent=list.length+" of "+DATA.length+" datasets"+(q?" matching “"+q+"”":"");
+ var el=document.getElementById("list");
+ el.innerHTML=list.length?list.map(function(d){return '<div class="ds"><div class="top"><h3>'+esc(d.t)+'</h3><div class="tags"><span class="tag'+(d.ty=="events"?" ev":d.ty=="estimates"?" est":d.ty=="audit trail"?" reg":"")+'">'+esc(d.ty)+'</span><span class="tag est">'+esc(d.ju)+'</span></div></div><p>'+esc(d.d)+'</p><p class="meta">'+d.per+' · '+d.n+' rows · fields: '+esc(d.cols)+'</p><a class="dl" href="dashboard.html'+d.link+'">Open in tracker</a><a class="dl" href="#" data-i="'+DATA.indexOf(d)+'" download>Download CSV</a></div>'}).join(""):'<p class="empty">Nothing matches. Try a broader term, or clear a filter.</p>';
+ el.querySelectorAll("a.dl[download]").forEach(function(a){a.onclick=function(e){e.preventDefault();var d=DATA[+a.dataset.i];download(d.t.toLowerCase().replace(/[^a-z0-9]+/g,"_")+".csv",[d.cols.split(",")].concat(d.rows()))}});
+}
+function chips(el,items,sel,fn){
+ el.innerHTML=items.map(function(c){return '<button class="chip'+(sel==c?" on":"")+'" data-c="'+esc(c)+'">'+(c=="all"?"All":c.charAt(0).toUpperCase()+c.slice(1))+"</button>"}).join("");
+ el.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){fn(b.dataset.c)}});
+}
+function rerender(){chips(document.getElementById("typechips"),TYPES,tSel,function(c){tSel=c;rerender()});chips(document.getElementById("jurchips"),JURS,jSel,function(c){jSel=c;rerender()});render()}
+document.getElementById("q").oninput=function(){q=this.value.toLowerCase().trim();render()};
+
+/* ---------- unified record index for the query tab ---------- */
+var RECS=[];
+DATA.forEach(function(d){
+ if(d.t.indexOf("monthly")>=0){M.forEach(function(r){RECS.push({ds:d.t,ty:d.ty,ju:"Indonesia",date:r[0],key:"Rp"+r[1]+"T"+(r[2]?" (derived)":""),note:r[2]?"derived from combined/cumulative report":"as reported"})})}
+ else if(d.ty=="events"&&d.t.indexOf("ASEAN")<0){EV.forEach(function(e){RECS.push({ds:d.t,ty:d.ty,ju:JN[e.j],date:e.d,key:e.b,note:e.t+" — "+e.p})})}
+ else if(d.ty=="events"){AXEV.forEach(function(e){RECS.push({ds:d.t,ty:d.ty,ju:JN[e.j],date:e.d,key:e.b,note:e.p})})}
+ else{d.rows().forEach(function(r){RECS.push({ds:d.t,ty:d.ty,ju:d.ju,date:String(r[0]),key:r.slice(1).join(" · "),note:d.t})})}
+});
+function parseQuery(s){
+ var toks=s.match(/(?:[^\s"]+|"[^"]*")+/g)||[];
+ var ALIAS={jur:"jur",country:"jur",place:"jur",type:"type",kind:"type",ds:"ds",dataset:"ds",year:"year",date:"date"};
+ var filters=[],words=[];
+ toks.forEach(function(t){
+  var m=t.match(/^([a-z]+):(.+)$/i),k=m?ALIAS[m[1].toLowerCase()]:null;
+  if(k)filters.push({k:k,v:m[2].replace(/^"|"$/g,"").toLowerCase()});
+  else words.push(t.replace(/^"|"$/g,"").toLowerCase());
+ });
+ return {f:filters,w:words};
+}
+function runQuery(s){
+ var p=parseQuery(s);
+ return RECS.filter(function(r){
+  var hay=(r.ds+" "+r.ty+" "+r.ju+" "+r.date+" "+r.key+" "+r.note).toLowerCase();
+  for(var i=0;i<p.f.length;i++){var f=p.f[i];
+   if(f.k=="jur"&&r.ju.toLowerCase().indexOf(f.v)<0)return false;
+   if(f.k=="type"&&r.ty.toLowerCase().indexOf(f.v)<0)return false;
+   if(f.k=="ds"&&r.ds.toLowerCase().indexOf(f.v)<0)return false;
+   if(f.k=="year"&&r.date.slice(0,4)!=f.v)return false;
+   if(f.k=="date"&&r.date.toLowerCase().indexOf(f.v)<0)return false;
+  }
+  for(var j=0;j<p.w.length;j++){if(hay.indexOf(p.w[j])<0)return false}
+  return true;
+ });
+}
+var rQ="";
+function runRender(){
+ var res=runQuery(rQ);
+ document.getElementById("rcount").textContent=res.length+" of "+RECS.length+" records"+(rQ?" for “"+rQ+"”":" — showing everything");
+ var el=document.getElementById("rresults");
+ if(!res.length){el.innerHTML='<p class="empty">No records match. Loosen a filter, or drop a token.</p>';return}
+ el.innerHTML='<table class="res"><tr><th>Date</th><th>Type</th><th>Jurisdiction</th><th>Record</th><th>Detail</th></tr>'+res.slice(0,120).map(function(r){return '<tr><td>'+esc(r.date)+'</td><td>'+esc(r.ty)+'</td><td>'+esc(r.ju)+'</td><td><b>'+esc(r.key)+'</b></td><td class="t">'+esc(r.note)+'</td></tr>'}).join("")+"</table>"+(res.length>120?'<p class="count" style="margin-top:10px">Showing the first 120 of '+res.length+' — narrow the query to see more.</p>':"");
+}
+function saved(){var s=null;try{s=JSON.parse(localStorage.getItem("regtrack_queries")||"[]")}catch(e){}return Array.isArray(s)?s:[]}
+function drawSaved(){
+ var el=document.getElementById("savedchips"),s=saved();
+ el.innerHTML=(s.length?"":"<span class='hint'>No saved queries yet — write one, press Save, name it.</span>")+s.map(function(sq,i){return '<button class="chip saved" data-q="'+esc(sq.q)+'" data-i="'+i+'">'+esc(sq.name)+'<span class="x" data-x="'+i+'">×</span></button>'}).join("");
+ el.querySelectorAll(".chip").forEach(function(b){b.onclick=function(e){
+  if(e.target.dataset.x!=null){var s2=saved();s2.splice(+e.target.dataset.x,1);try{localStorage.setItem("regtrack_queries",JSON.stringify(s2))}catch(x){}drawSaved();return}
+  document.getElementById("qq").value=b.dataset.q;rQ=b.dataset.q;runRender();
+ }});
+}
+document.getElementById("qgo").onclick=function(){rQ=document.getElementById("qq").value.trim();runRender()};
+document.getElementById("qq").onkeydown=function(e){if(e.key=="Enter"){rQ=this.value.trim();runRender()}};
+document.getElementById("qsave").onclick=function(){
+ var qv=document.getElementById("qq").value.trim();if(!qv)return;
+ var name=prompt("Name this query:",qv);if(!name)return;
+ var s=saved();s.push({name:name,q:qv});try{localStorage.setItem("regtrack_queries",JSON.stringify(s))}catch(x){}
+ drawSaved();
+};
+
+/* ---------- analyse tab ---------- */
+var AIDX={};(function(){ // action counts per month from EV + AXEV
+ function bump(d){var m=d.slice(0,7);AIDX[m]=(AIDX[m]||0)+1}
+ EV.forEach(function(e){bump(e.d)});AXEV.forEach(function(e){if(e.d.length>7)bump(e.d)});
+})();
+var PANEL=M.map(function(r,i){return {m:r[0],v:r[1],imp:r[2],t:i,logv:Math.log(r[1]),gr:i>0?Math.log(r[1])-Math.log(M[i-1][1]):null,yr:+r[0].slice(0,4),mo:+r[0].slice(5),postT:r[0]>="2025-01"?1:0,postX:r[0]>="2025-08"?1:0,act:AIDX[r[0]]||0}});
+var VARS={
+ v:{name:"Transaction value (RpT)",f:function(r){return r.v}},
+ logv:{name:"log transaction value",f:function(r){return r.logv}},
+ gr:{name:"Monthly growth (Δlog)",f:function(r){return r.gr},dropFirst:true},
+ act:{name:"Regulatory actions that month (count)",f:function(r){return r.act}},
+ t:{name:"Time (months since Jan 2023)",f:function(r){return r.t}},
+ yr:{name:"Year",f:function(r){return r.yr}},
+ mo:{name:"Calendar month (seasonality)",f:function(r){return r.mo}},
+ postT:{name:"Post-transfer dummy (Jan 2025 →)",f:function(r){return r.postT}},
+ postX:{name:"Post-tax-change dummy (Aug 2025 →)",f:function(r){return r.postX}},
+ imp:{name:"Imputed month flag",f:function(r){return r.imp}}
+};
+function mean(a){return a.reduce(function(x,y){return x+y},0)/a.length}
+function sd(a){var m=mean(a);return Math.sqrt(a.reduce(function(s,x){return s+(x-m)*(x-m)},0)/(a.length-1||1))}
+function erf(x){var s=x<0?-1:1;x=Math.abs(x);var a1=.254829592,a2=.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911,t=1/(1+p*x),y=1-((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);return s*y}
+function p2(z){return 2*(1-0.5*(1+erf(Math.abs(z)/Math.SQRT2)))}
+function welch(a,b){
+ var ma=mean(a),mb=mean(b),va=Math.pow(sd(a),2),vb=Math.pow(sd(b),2),na=a.length,nb=b.length;
+ var se=Math.sqrt(va/na+vb/nb),t=(ma-mb)/se;
+ var df=Math.pow(va/na+vb/nb,2)/(Math.pow(va/na,2)/(na-1)+Math.pow(vb/nb,2)/(nb-1));
+ return {d:ma-mb,se:se,t:t,p:p2(t),df:df,ma:ma,mb:mb};
+}
+function ols(y,x){
+ var mx=mean(x),my=mean(y),sxy=0,sxx=0;
+ for(var i=0;i<y.length;i++){sxy+=(x[i]-mx)*(y[i]-my);sxx+=(x[i]-mx)*(x[i]-mx)}
+ var b1=sxy/sxx,b0=my-b1*mx,res=y.map(function(v,i){return v-b0-b1*x[i]}),n=y.length;
+ var sse=res.reduce(function(s,r){return s+r*r},0),sxxres=sxx;
+ var se1=Math.sqrt(sse/(n-2)/sxxres),t=b1/se1,r=Math.sqrt(sse==0?1:1-sse/y.reduce(function(s,v){var d=v-my;return s+d*d},0));
+ return {b0:b0,b1:b1,se1:se1,t:t,p:p2(t),r:r*(b1<0?-1:1),fit:function(xv){return b0+b1*xv}};
+}
+function uniq(vals){var o={};vals.forEach(function(v){o[v]=1});return Object.keys(o)}
+var NOTES={
+ "postT|gr":"This is the project's headline question in miniature: the growth-rate break at the transfer. Compare with the event-study tab (−14.3 pp/month, p = 0.117, placebos pass) — any 'significant' result here would contradict the tested specification.",
+ "postX|gr":"The tax rise coincides with cooling — but the August unrest and the global cycle sit in the same weeks, and this spec failed its placebo test in the event study. Description, not attribution.",
+ "postX|logv":"Same caveat as the transfer: naive level shift (+65%, p≈0.02) failed its placebo test here. This regression will likely reproduce that — the placebo table, not the p-value, is the finding.",
+ "postT|gr":"This is essentially the project's main result in miniature: a growth-rate break at the transfer. Compare with the event-study tab (−14.3 pp/month, p = 0.117, placebos pass).",
+ "mo|v":"You are looking at seasonality. Watch for soft months around Ramadan/Idul Fitri (the Islamic calendar shifts ~11 days/year against this grid, so a persistent pattern is unlikely to be purely religious-calendar).",
+ "act|v":"Association between regulatory attention and market activity in the same month. This cannot establish causation in either direction — actions may respond to markets, markets to actions, or both to global cycles. No control series is included.",
+ "t|logv":"The overall trend: recovery, handover, cooling — all in one slope. Descriptive, not causal.",
+ "imp|v":"Checking whether derived months differ from reported ones — a data-quality audit. A significant result would justify excluding imputed months in other analyses."
+};
+function runAna(){
+ var A=VARS[document.getElementById("varA").value],B=VARS[document.getElementById("varB").value];
+ if(!A||!B)return;
+ var rows=PANEL.filter(function(r){var a=A.f(r),b=B.f(r);return a!=null&&b!=null&&(!A.dropFirst||r.t>0)});
+ var y=rows.map(A.f),x=rows.map(B.f),xs=uniq(x);
+ var chart=document.getElementById("anachart"),stats=document.getElementById("anastats"),readel=document.getElementById("anaread");
+ var W=640,H=280,L=52,R=14,T=14,Bt=30;
+ function axes(xsAll,ysAll){
+  var x0=Math.min.apply(0,xsAll),x1=Math.max.apply(0,xsAll),y0=Math.min.apply(0,ysAll),y1=Math.max.apply(0,ysAll);
+  if(x1==x0)x1=x0+1;if(y1==y0)y1=y0+1;var py=(y1-y0)*.08,pz=(x1-x0)*.04;
+  return {X:function(v){return L+(v-(x0-pz))/((x1+pz)-(x0-pz))*(W-L-R)},Y:function(v){return H-Bt-(v-y0+py)/((y1+py)-(y0-py))*(H-Bt-T)},y0:y0,y1:y1};
+  }
+ if(xs.length<=13){ /* group comparison */
+  var groups={};rows.forEach(function(r,i){var k=x[i];(groups[k]=groups[k]||[]).push(y[i])});
+  var keys=uniq(x).sort(function(a,b){return a-b});
+  var ys=[];keys.forEach(function(k){ys=ys.concat(groups[k])});
+  var ax=axes([0,keys.length-1],[Math.min.apply(0,ys),Math.max.apply(0,ys)]);
+  var bw=(W-L-R)/keys.length,g="";
+  for(var i=0;i<=4;i++){var v=ax.y0+(ax.y1-ax.y0)*i/4;g+="<line x1='"+L+"' x2='"+(W-R)+"' y1='"+ax.Y(v)+"' y2='"+ax.Y(v)+"' stroke='var(--ln)'/><text x='4' y='"+(ax.Y(v)+4)+"'>"+v.toFixed(1)+"</text>"}
+  keys.forEach(function(k,j){
+   var vals=groups[k],m=mean(vals),x0=L+j*bw+bw*.18,w2=bw*.64,err=vals.length>1?sd(vals)/Math.sqrt(vals.length)*1.96:0;
+   g+="<rect x='"+x0+"' y='"+ax.Y(m)+"' width='"+w2+"' height='"+Math.max(1,ax.Y(Math.max(0,ax.y0))-ax.Y(m))+"' fill='var(--moss)' opacity='.85'/>";
+   if(err)g+="<line x1='"+(x0+w2/2)+"' x2='"+(x0+w2/2)+"' y1='"+ax.Y(m-err)+"' y2='"+ax.Y(m+err)+"' stroke='var(--ink)'/>";
+   g+="<text x='"+(x0+w2/2)+"' y='"+(H-8)+"' text-anchor='middle'>"+(B.name.indexOf("month")>=0?["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][k-1]:k)+"</text>";
+   g+="<text x='"+(x0+w2/2)+"' y='"+(ax.Y(m)-5)+"' text-anchor='middle'>"+m.toFixed(1)+"</text>";
+  });
+  chart.innerHTML="<svg viewBox='0 0 "+W+" "+H+"'>"+g+"</svg>";
+  var html="";
+  if(keys.length==2){
+   var w=welch(groups[keys[1]],groups[keys[0]]);
+   html="<table class='res'><tr><th>Group</th><th>Mean of "+esc(A.name)+"</th><th>n</th></tr><tr><td>"+esc(B.name)+" = "+esc(keys[0])+"</td><td>"+w.mb.toFixed(3)+"</td><td>"+groups[keys[0]].length+"</td></tr><tr><td>"+esc(B.name)+" = "+esc(keys[1])+"</td><td>"+w.ma.toFixed(3)+"</td><td>"+groups[keys[1]].length+"</td></tr><tr><td><b>Difference</b></td><td>"+w.d.toFixed(3)+" (Welch SE "+w.se.toFixed(3)+")</td><td>p ≈ "+w.p.toFixed(3)+"</td></tr></table>";
+  }else{
+   html="<table class='res'><tr><th>"+esc(B.name)+"</th><th>Mean</th><th>SD</th><th>n</th></tr>"+keys.map(function(k){return "<tr><td>"+esc(k)+"</td><td>"+mean(groups[k]).toFixed(2)+"</td><td>"+(groups[k].length>1?sd(groups[k]).toFixed(2):"—")+"</td><td>"+groups[k].length+"</td></tr>"}).join("")+"</table>";
+  }
+  stats.innerHTML=html;
+ }else{ /* scatter + OLS */
+  var fit=ols(y,x),ax=axes(x,y),g="";
+  for(var i=0;i<=4;i++){var v=ax.y0+(ax.y1-ax.y0)*i/4;g+="<line x1='"+L+"' x2='"+(W-R)+"' y1='"+ax.Y(v)+"' y2='"+ax.Y(v)+"' stroke='var(--ln)'/><text x='4' y='"+(ax.Y(v)+4)+"'>"+v.toFixed(1)+"</text>"}
+  var x0=Math.min.apply(0,x),x1=Math.max.apply(0,x);
+  [x0,x1].forEach(function(xv,k){g+="<text x='"+ax.X(xv)+"' y='"+(H-8)+"' text-anchor='"+(k?"end":"start")+"'>"+xv.toFixed(0)+"</text>"});
+  rows.forEach(function(r,i){g+="<circle cx='"+ax.X(x[i]).toFixed(1)+"' cy='"+ax.Y(y[i]).toFixed(1)+"' r='3' fill='var(--moss)' opacity='.75'><title>"+esc(rows[i].m)+": "+A.name.split("(")[0]+"= "+y[i].toFixed(2)+", "+B.name.split("(")[0]+"= "+x[i]+"</title></circle>"});
+  g+="<line x1='"+ax.X(x0)+"' y1='"+ax.Y(fit.fit(x0))+"' x2='"+ax.X(x1)+"' y2='"+ax.Y(fit.fit(x1))+"' stroke='var(--clay)' stroke-width='2'/>";
+  chart.innerHTML="<svg viewBox='0 0 "+W+" "+H+"'>"+g+"</svg>";
+  stats.innerHTML="<table class='res'><tr><th>Quantity</th><th>Estimate</th><th>Detail</th></tr><tr><td>Slope (B → A)</td><td>"+fit.b1.toFixed(4)+"</td><td>SE "+fit.se1.toFixed(4)+", p ≈ "+fit.p.toFixed(3)+"</td></tr><tr><td>Correlation r</td><td>"+fit.r.toFixed(3)+"</td><td>r² = "+(fit.r*fit.r).toFixed(3)+"</td></tr><tr><td>n</td><td>"+rows.length+"</td><td>OLS on the monthly panel</td></tr></table>";
+ }
+ var key=[document.getElementById("varB").value,document.getElementById("varA").value].join("|");
+ readel.innerHTML="<div class='ds'><p><b>Reading this.</b> This is a description of association in 45 monthly observations — "+(key=="postT|logv"||key=="postX|logv"?"and for dummy-on-level regressions, the project has already documented that this specification fails its placebo test.":"it is not a causal estimate. No control series, no counterfactual, no exclusion restriction.")+" "+(NOTES[key]?"":"Significance with n≈45 is fragile; check the chart for single points driving the fit, and prefer the event-study tab's placebo-tested specifications for any causal claim.")+(NOTES[key]?" "+NOTES[key]:"")+"</p></div>";
+}
+document.getElementById("varA").innerHTML=Object.keys(VARS).map(function(k){return '<option value="'+k+'"'+(k=="logv"?" selected":"")+'>'+VARS[k].name+"</option>"}).join("");
+document.getElementById("varB").innerHTML=Object.keys(VARS).map(function(k){return '<option value="'+k+'"'+(k=="postT"?" selected":"")+'>'+VARS[k].name+"</option>"}).join("");
+document.getElementById("varA").onchange=runAna;document.getElementById("varB").onchange=runAna;
+/* preset questions */
+var PRESETS=[
+ ["What happened at the handover?","gr","postT"],
+ ["Is there seasonality?","v","mo"],
+ ["What changed after the tax rise?","gr","postX"],
+ ["Do derived months look different?","v","imp"]
+];
+var presetSel=0;
+document.getElementById("presetrow").innerHTML=PRESETS.map(function(p,i){return '<button class="chip'+(i==presetSel?" on":"")+'" data-i="'+i+'">'+p[0]+"</button>"}).join("");
+document.getElementById("presetrow").querySelectorAll(".chip").forEach(function(b){b.onclick=function(){presetSel=+b.dataset.i;document.getElementById("varA").value=PRESETS[presetSel][1];document.getElementById("varB").value=PRESETS[presetSel][2];document.getElementById("presetrow").querySelectorAll(".chip").forEach(function(x){x.className="chip"+(+x.dataset.i==presetSel?" on":"")});runAna()}});
+document.getElementById("advtoggle").onclick=function(){var c=document.getElementById("advcontrols");c.style.display=c.style.display=="none"?"":"none";this.className="chip"+(c.style.display=="none"?"":" on")};
+(function(){var first=document.getElementById("presetrow").querySelectorAll(".chip")[0];if(first)first.click()})();
+
+/* ---------- tabs ---------- */
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){
+ document.querySelectorAll(".tabs button").forEach(function(x){x.className=""});b.className="on";
+ document.getElementById("cat").style.display=b.dataset.v=="cat"?"":"none";
+ document.getElementById("qry").style.display=b.dataset.v=="qry"?"":"none";
+ document.getElementById("ana").style.display=b.dataset.v=="ana"?"":"none";
+ if(b.dataset.v=="ana")runAna();
+}});
+rerender();drawSaved();runRender();runAna();
+/* accept an inbound query from the landing page: datasets.html?q=... */
+(function(){var m=location.search.match(/[?&]q=([^&]+)/);if(m){var q=decodeURIComponent(m[1]);var b=document.querySelector('.tabs button[data-v="qry"]');if(b)b.click();document.getElementById("qq").value=q;rQ=q;runRender()}})();
+</script></body></html>
